@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcAdminRoleDaoMapper">
+  <resultMap id="BaseResultMap" type="com.aichu.dao.workstation.object.AcAdminRoleDao">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <!--<select id="getAdminUserRoleListToUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select  war.id,
+                war.role_code,
+                war.role_name,
+                war.is_delete
+            from wz_admin_user_role wa
+              INNER JOIN wz_admin_role war on (wa.role_id = war.id)
+        where wa.user_id = #{userId,jdbcType=INTEGER};
+  </select>-->
+
+  <!--通过用户Id查询 角色ID集合-->
+  <select id="getRoleIdListToUserId" resultType="java.lang.Integer">
+    select war.id
+    from ac_admin_user_role waur
+       left join ac_admin_role war on (waur.role_id = war.id)
+    where waur.user_id = #{id} and waur.is_delete = 0 and war.is_delete = 0
+  </select>
+
+  <!--通过用户Id查询 角色名称集合-->
+  <select id="getRoleNameListToUserId" resultType="java.lang.String">
+    select war.role_name AS roleName
+    from ac_admin_user_role waur
+       left join ac_admin_role war on (waur.role_id = war.id)
+    where waur.user_id = #{id} and war.is_delete = 0
+  </select>
+
+  <!--通过管理员Id修改用户角色中间表数据-->
+  <update id="stopOrStartUserRoleToUserId">
+    update ac_admin_user_role  set is_delete = #{status} where user_id = #{userId}
+  </update>
+
+  <!--删除用户角色中间表-->
+  <delete id="deleteAdminUserRoleData">
+    delete from ac_admin_user_role where user_id = #{userId}
+  </delete>
+
+  <!--查询管理员角色中间表总数-->
+  <select id="queryAdminUserRoleCountToUserId" resultType="java.lang.Integer">
+    select count(*) from ac_admin_user_role where user_id = #{userId}
+  </select>
+
+  <!--查询后台所有角色 角色下拉框-->
+  <select id="getAdminRoleBackSelectList" resultType="com.aichu.dao.workstation.object.AdminRoleBackSelectDao">
+    select war.id,war.role_name AS roleName from ac_admin_role war where war.is_delete = 0
+  </select>
+
+  <!--查询后台角色列表-->
+  <select id="getAdminBackList" resultType="com.aichu.dao.workstation.object.AdminRoleBackListDao">
+    select  war.id,
+            war.role_code AS roleCode,
+            war.role_name AS roleName,
+            DATE_FORMAT(war.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+      from ac_admin_role war
+    where war.is_delete = 0
+  </select>
+
+  <!--修改角色-->
+  <update id="updateAdminRole" parameterType="com.aichu.dao.workstation.object.AdminRoleUpdateOrAddDao">
+    update ac_admin_role
+    <set>
+      <if test="roleCode != null">
+        role_code = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--获取角色Code-->
+  <select id="getAdminRoleCodeToId" resultType="java.lang.String">
+    select role_code AS roleCode from ac_admin_role where id = #{roleId} and is_delete = 0
+  </select>
+
+  <!--检查角色名称是否存在-->
+  <select id="queryRoleNameIsExist" resultType="java.lang.Integer">
+    select count(*) from ac_admin_role where role_name = #{roleName}
+  </select>
+
+  <!--检查角色Code是否存在-->
+  <select id="queryRoleCodeIsExist" resultType="java.lang.Integer">
+    select count(*) from ac_admin_role where role_code = #{roleCode}
+  </select>
+
+</mapper>

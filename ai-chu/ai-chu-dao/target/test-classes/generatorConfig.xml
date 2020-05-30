@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<context id="context1" defaultModelType="flat" targetRuntime="MyBatis3">
+
+
+		<!-- ToString方法 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
+		<plugin type="plugin.ModelRenamePlugin">
+			<property name="modelNameSuffix" value="DO" />
+		</plugin>
+
+		<plugin type="plugin.ModelCommentPlugin" />
+
+		<!--<plugin type="plugin.TableIgnoreFiledPlugin" >-->
+			<!--<property name="gmt_create_time" value="true" />-->
+			<!--<property name="gmt_update_time" value="true" />-->
+		<!--</plugin>-->
+
+		<plugin type="plugin.SqlMapMergeablePlugin">
+			<property name="isMergeable" value="false"/>
+		</plugin>
+
+		<!-- 增加Serializable接口 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+		<!-- 增加行界限接口 -->
+		<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+
+		<!--关闭注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true"/>
+<!--			<property name="suppressDate" value="false"/>-->
+<!--			<property name="addRemarkComments" value="false"/>-->
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+						connectionURL="jdbc:mysql://rm-wz980mo87m966r02hvo.mysql.rds.aliyuncs.com:3306/866_aichu_dev?useUnicode=true"
+						userId="866_aichu"
+						password="wwsl866aichu">
+			<property name="schema" value="false" />
+		</jdbcConnection>
+
+		<!--jdbc BigDecimals类型 强转成java的BigDecimals类型-->
+		<javaTypeResolver type="com.aichu.dao.type.GeneratorJavaTypeResolver">
+			<property name="forceBigDecimals" value="true" />
+		</javaTypeResolver>
+
+		<javaModelGenerator targetPackage="com.aichu.dao.autogeneration.object" targetProject="${user.dir}\ai-chu-dao\src\main\java" />
+		<sqlMapGenerator targetPackage="autogeneration\sqlmap/xml" targetProject="${user.dir}\ai-chu-dao\src\main\resources" />
+		<javaClientGenerator targetPackage="com.aichu.dao.autogeneration.mapper" targetProject="${user.dir}\ai-chu-dao\src\main\java" type="XMLMAPPER" />
+
+
+		<!--表配置-->
+        <!--<table tableName="wz_user_activity_sign">-->
+            <!--<generatedKey column="id" sqlStatement="MySql"  identity="true"/>-->
+            <!--<domainObjectRenamingRule searchString="Store" replaceString="" />-->
+        <!--</table>-->
+
+		<table tableName="%">
+			<generatedKey column="id" sqlStatement="MySql"  identity="true"/>
+			<!--<domainObjectRenamingRule searchString="^Dt" replaceString="" />-->
+		</table>
+    </context>
+</generatorConfiguration>

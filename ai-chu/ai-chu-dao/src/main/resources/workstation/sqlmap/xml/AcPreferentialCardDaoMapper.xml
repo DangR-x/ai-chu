@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcPreferentialCardDaoMapper">
+
+    <!-- 查询用户签到次数 -->
+    <select id="userSignTotalTimes" resultType="java.lang.Integer">
+        SELECT
+            COUNT(ausr.`id`)
+        FROM
+            `ac_user_sign_record` ausr
+        WHERE
+                ausr.user_id = #{userId}
+            AND ausr.is_delete = 0
+            AND DATE_FORMAT(ausr.create_time,'%Y-%m-%d') >= DATE_FORMAT(#{createTime}, '%Y-%m-%d')
+    </select>
+
+    <!--后台优惠卡列表查询-->
+    <select id="getPreferentialCarList" resultType="com.aichu.dao.workstation.object.AcPreferentialCardBackDao">
+        select
+              apc.id,
+              apc.card_name as cardName,
+              apc.card_original_price as cardOriginalPrice,
+              apc.card_sale_price as cardSalePrice,
+              apc.card_detail as cardDetail,
+              apc.every_day_free_coin as everyDayFreeCoin,
+              apc.total_free_coin as totalFreeCoin,
+              apc.sign_time as signTime,
+              apc.card_type as cardType,
+              apc.is_delete as isDelte,
+              DATE_FORMAT(apc.create_time, '%Y-%m-%d %H:%i:%s') as createTime
+         from ac_preferential_card apc
+         where apc.is_delete = 0
+          <if test="name !=null and name != ''">
+              and (
+                    apc.card_name like concat('%',#{name},'%')
+                or  apc.card_detail like concat('%',#{name},'%')
+              )
+          </if>
+         order by apc.create_time
+    </select>
+
+</mapper>

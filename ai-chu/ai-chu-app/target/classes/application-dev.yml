@@ -1,0 +1,95 @@
+#spring 数据源信息
+spring:
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 50MB
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://rm-wz980mo87m966r02hvo.mysql.rds.aliyuncs.com:3306/866_aichu_dev?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    username: mxnt
+    password: Mxsd2016
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000
+    password: wenzu123456789
+    jedis:
+      pool:
+        # max-active: 30
+        min-idle: 10
+        max-idle: 100
+        max-wait: 1000
+
+#微信配置参数信息
+wxConfig:
+  wxAppId: wx519d5cbf71626cba
+  wxSecret: df8bfbf8f1a1b520db3252af893a0b42
+  wxMchId: 1557682731
+  wxMchKey: leyongleshiaichuleyongleshiaichu
+  wxNormalNotifyUrl: http://47.112.169.89:85/wx/pay/app/normal/order/callback
+  wxRefundNotifyUrl: http://47.112.169.89:85/wx/refund/wxAppRefundOrderCallBack
+
+#阿里配置参数信息
+aliConfig:
+  #即创建应用后生成
+  aliAppId: 2019082366355710
+  aliPid: 2088631112087661
+  aliSeller: 2088631112087661
+  #开发者私钥，由开发者自己生成
+  aliAppPrivateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCe/VsQSO+OyeOqHJtnZSlyHCjjVM3Vc5W1TrSIFEuNvS+5WGST+UYDv/XhoB5HiD24XyDEmawk4gA+CPCcsUX8UYotkkSCo1ijBQ2Tw+th9CJ8hX3HTwhu4cDE8wU2Ha1c2ub9CCemJEQ0HcoByCwxMHQpDjZqaics/0gW7S0qKeBy9Dmfyv6Ld7q36YR1L/5cnyPLgwy/HvflFW830+eETrZoGXM0AG/YOMKFIsRTUkQ+JmB1VQ8Zhgq90gNRjXGpglwkAjeSvbKSenohw6nKTbsHKH/1AWtvLXTMwgHVNMQK+qmMl4rhkm0AzMdK6fuvf9nIhjmPsygmkex/GmL/AgMBAAECggEAesjlbAU35Qlr5nNjXQ2WXYb72N0kfaVfR/95kuJBmzwxQC3Qtyq69KhqRw52c/321I2667pWZMGZOE+FKy4JA50hXqJogI+QI44Cd0zGWwbFH2+kvKj/tUppqnCYZLu0qFJyM5X5sOivN6SN3qRt5Ksr+oz8X2CN0sVwMiyHRdiLtfg5C95/j6oWRIbbdOPecW297htBheJ9moSpO3VC5PHTyCMMfs7a07z7pRMFtFdktqB+Db1sAFBAwIBcN19KLIjk4ObRalQuYc8O/jAnMcS+JEtLErejpxHdA/8d7pRbNPgWdtXQL+U9VH2ltJq+iiWHjfmJnnuIsXps1fWrGQKBgQDQR5DFa/a97MbsAoY1H0/XhHDe5rUysObKaQO6qLQ0sgEuOgF5WPl228NOegnYFDfSOIosoyvo9GX3rSXX1GeI7fTlxYhVyMmGnDPm6FqIU6OQEwLGkoqVQTUZJO/EAkZMgkbYMhvOc9mlaXAGAIKSt/sVwcEqgkwwbJ+gIrlUjQKBgQDDar151irmDkbXyiKaZwATedVIN7a2nloRnCpzQ9Ab+d4r7XVeWn3pvlKGpCtBDU1F2bNigpNwW2/LCRmkMGKu4qKkpUeEmtSfF44WAJvUfxtYhqelmQQdUQy8ee3wfSQ5bOB+KPgjHgvTXNDzg+QJxBVlN4nWPGFKrq/RzcgguwKBgAOH4w1luiYYGHsxw8KsyDa4GQ2+TX4Rf6gYxaZpa7yk894rv5CmEHySVypCaV5PYW7f5H/DOGBXnE7pkYWqJSMuHYOzqI8Du17b0QluEPLUsCYmHFrvawgCtfq6JJJnE3gCkV7i4pPKZPsn4W1Inu4LzmbdBQBKey4q+T3GuOuVAoGAWIOfwXENy1jKI/IuDEv9T9UOk4CQ5VUCrRlUbRNZT2K1jKYpVIyeneKUVOJFqViSGMKMK2HD0M/J6mh70dAM0vRbAULQCzNqfYlY1YR/ERhl1Ypgo3SU1YahwzljWlwErXIwmVSLWLTCXIGdL8Ac6YOEwW0PpReCZiaMAvc34AMCgYBj7t3F4O9kstuNXB16PYLoOYIZriSA/8dGOV7aKHYU2LdfWPRVglKjG6X5woOGMVPfJMmDl40cecjSAZhQXKCjNvAOaQQPl1x/TMRbzRdeaVxreHY/oiQR+n9j5Ai00yUI+wmFCeMVbGrjpQ/uFnI7qm0Ckcq/cxXsyP+nLmyCxg==
+  #支付宝公钥，由支付宝生成
+  aliAppPublicKey: MIIE4jCCAsqgAwIBAgIIYsSr5bKAMl8wDQYJKoZIhvcNAQELBQAwejELMAkGA1UEBhMCQ04xFjAUBgNVBAoMDUFudCBGaW5hbmNpYWwxIDAeBgNVBAsMF0NlcnRpZmljYXRpb24gQXV0aG9yaXR5MTEwLwYDVQQDDChBbnQgRmluYW5jaWFsIENlcnRpZmljYXRpb24gQXV0aG9yaXR5IFIxMB4XDTE4MDMyMjE0MzQxNVoXDTM3MTEyNjE0MzQxNVowgYIxCzAJBgNVBAYTAkNOMRYwFAYDVQQKDA1BbnQgRmluYW5jaWFsMSAwHgYDVQQLDBdDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTE5MDcGA1UEAwwwQW50IEZpbmFuY2lhbCBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eSBDbGFzcyAyIFIxMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsLMfYaoRoPRbmDcAfXPCmKf43pWRN5yTXa/KJWO0l+mrgQvs89bANEvbDUxlkGwycwtwi5DgBuBgVhLliXu+R9CYgr2dXs8D8Hx/gsggDcyGPLmVrDOnL+dyeauheARZfA3du60fwEwwbGcVIpIxPa/4n3IS/ElxQa6DNgqxh8J9Xwh7qMGl0JK9+bALuxf7B541Gr4p0WENG8fhgjBV4w4ut9eQLOoa1eddOUSZcy46Z7allwowwgt7b5VFfx/P1iKJ3LzBMgkCK7GZ2kiLrL7RiqV+h482J7hkJD+ardoc6LnrHO/hIZymDxok+VH9fVeUdQa29IZKrIDVj65THQIDAQABo2MwYTAfBgNVHSMEGDAWgBRfdLQEwE8HWurlsdsio4dBspzhATAdBgNVHQ4EFgQUSqHkYINtUSAtDPnS8XoyoP9p7qEwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwDQYJKoZIhvcNAQELBQADggIBAIQ8TzFy4bVIVb8+WhHKCkKNPcJe2EZuIcqvRoi727lZTJOfYy/JzLtckyZYfEI8J0lasZ29wkTta1IjSo+a6XdhudU4ONVBrL70U8Kzntplw/6TBNbLFpp7taRALjUgbCOk4EoBMbeCL0GiYYsTS0mw7xdySzmGQku4GTyqutIGPQwKxSj9iSFw1FCZqr4VP4tyXzMUgc52SzagA6i7AyLedd3tbS6lnR5BL+W9Kx9hwT8L7WANAxQzv/jGldeuSLN8bsTxlOYlsdjmIGu/C9OWblPYGpjQQIRyvs4Cc/mNhrh+14EQgwuemIIFDLOgcD+iISoN8CqegelNcJndFw1PDN6LkVoiHz9p7jzsge8RKay/QW6C03KNDpWZEUCgCUdfHfo8xKeR+LL1cfn24HKJmZt8L/aeRZwZ1jwePXFRVtiXELvgJuM/tJDIFj2KD337iV64fWcKQ/ydDVGqfDZAdcU4hQdsrPWENwPTQPfVPq2NNLMyIH9+WKx9Ed6/WzeZmIy5ZWpX1TtTolo6OJXQFeItMAjHxW/ZSZTok5IS3FuRhExturaInnzjYpx50a6kS34c5+c8hYq7sAtZ/CNLZmBnBCFDaMQqT8xFZJ5uolUaSeXxg7JFY1QsYp5RKvj4SjFwCGKJ2+hPPe9UyyltxOidNtxjaknOCeBHytOr
+  #支付宝网关（固定
+  aliRequestURL: https://openapi.alipay.com/gateway.do
+  aliLoginURI: https://openauth.alipay.com/oauth2/appToAppAuth.htm
+  aliAuthorizeURI: https://openauth.alipay.com/oauth2/publicAppAuthorize.htm
+  aliNormalNotifyUrl: http://47.112.169.89:85/ali/pay/app/normal/order/callback
+  #参数返回格式，只支持json
+  aliFormat : json
+  #编码集，支持GBK/UTF-8
+  aliCharset: UTF-8
+  #商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2
+  aliSignType: RSA2
+  #接口权限值，目前只支持auth_user和auth_base两个值-->>
+  #auth_base：以auth_base为scope发起的网页授权，是用来获取进入页面的用户的userId的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（通常是业务页面）。
+  #auth_user：以auth_user为scope发起的网页授权，是用来获取用户的基本信息的（比如头像、昵称等）。但这种授权需要用户手动同意，用户同意后，就可在授权后获取到该用户的基本信息。若想获取用户信息，scope的值中需要有该值存在，如scope=auth_user,auth_base
+  aliScope: auth_user
+
+#七牛云存储OSS
+qiNiuOss:
+  qiNiuAccessKey: RkU6P5xG8a3mPUA23WlYHKWgGooPCRXh730GnngB
+  qiNiuSecretKey: tTy-0fdmeDA5dYI48KxhH7QAPVJ1xhgPJNFO1Sjc
+  qiNiuBucket: ljd-app
+  qiNiuCndDomain: https://img.ljd.leyongleshi.com/
+
+#悦凡短信SMS
+yueFanSms:
+  yueFanSmsAccount: leyong
+  yueFanSmsPassWord: dc82b77e8ce4b495219118eb2ad4a39c
+  yueFanSmsType: leyong
+  yueFanSmsSign: 【爱触】
+  yueFanSmsVerifCodeTime: 15
+
+#网易云配置参数信息
+wangYiYunCloud:
+  appKey: 3683b8198b2cc930c76eb595803f5f1b
+  appSecret: a00caa02121c
+
+#激光推送配置参数信息
+jPush:
+  appKey: fa3e910098872cb14bde09b6
+  appSecret: 083fb0809acd7ef1a00f504f
+
+#日志配置信息
+logback:
+  logDir: log/dev
+
+logging:
+  level:
+    com.aichu.app.api: debug
+    com.aichu.service.api.impl: debug
+    com.aichu.manager: debug
+    com.aichu.dao.autogeneration.mapper: debug
+    com.aichu.dao.workstation.mapper: debug

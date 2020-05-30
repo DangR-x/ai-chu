@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.aichu</groupId>
+        <artifactId>ai-chu</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <groupId>com.aichu.service</groupId>
+    <artifactId>ai-chu-service</artifactId>
+    <packaging>jar</packaging>
+    <name>ai-chu-service</name>
+    <description>爱触项目公共Service接口</description>
+
+    <dependencies>
+
+        <!-- 爱触整合Dao依赖 -->
+        <dependency>
+            <groupId>com.aichu.dao</groupId>
+            <artifactId>ai-chu-dao</artifactId>
+            <version>${aichu.version}</version>
+        </dependency>
+
+        <!-- 框架整合Manager-Service依赖 -->
+        <dependency>
+            <groupId>com.aichu.manager.service</groupId>
+            <artifactId>ai-chu-manager-service</artifactId>
+            <version>${aichu.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>2.1.6.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>

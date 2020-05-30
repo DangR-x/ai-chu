@@ -1,0 +1,25 @@
+#SpringBoot启动端口号配置
+server:
+  port: 88
+
+#SpringBoot启动环境配置
+spring:
+  profiles:
+    active: dev
+
+#Mybatis配置信息
+mybatis:
+  mapper-locations: classpath*:**/sqlmap/**/*.xml
+  typeAliasesPackage: com.aichu.dao.*.object
+
+#输出日志配置信息
+logback:
+  appName: aichu_v1.0.0
+  fileType: log
+
+#Shiro路径拦截配置
+shiro:
+  default:
+    expireTime: 1800
+
+

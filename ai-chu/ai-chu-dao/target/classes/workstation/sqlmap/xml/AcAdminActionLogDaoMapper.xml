@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcAdminActionLogDaoMapper">
+
+  <!--操作日志记录查询-->
+  <select id="getAdminActionLogList" resultType="com.aichu.dao.workstation.object.AcAdminActionLogDao">
+      select waal.id,
+             waal.admin_user_id AS adminUserId,
+             (select wau.user_name from ac_admin_user wau where wau.id = waal.admin_user_id) AS adminUserName,
+             waal.action_ip AS actionIp,
+             waal.action_model AS actionModel,
+             waal.action_log AS actionLog,
+             waal.is_delete AS isDelete,
+             DATE_FORMAT(waal.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+      from ac_admin_action_log waal
+      where waal.is_delete = 0
+        <if test="name != null and name != ''">
+            and (
+                  waal.action_ip like concat('%',#{name},'%')
+               or waal.action_model like concat('%',#{name},'%')
+               or waal.action_log like concat('%',#{name},'%')
+          )
+        </if>
+        <if test="adminUserId != null">
+            and  waal.admin_user_id = #{adminUserId}
+        </if>
+      order by waal.create_time desc
+  </select>
+</mapper>

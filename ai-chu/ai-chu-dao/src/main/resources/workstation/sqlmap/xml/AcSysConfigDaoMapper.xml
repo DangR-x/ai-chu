@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcSysConfigDaoMapper">
+
+    <!--后台系统配置列表信息查询-->
+    <select id="getSystemConfigList" resultType="com.aichu.dao.workstation.object.AcSysConfigDao">
+         select wssc.id,
+                wssc.`keys`,
+                wssc.key_name AS keyName,
+                wssc.value,
+                wssc.comment,
+                wssc.type,
+                wssc.`source`,
+                DATE_FORMAT(wssc.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_sys_config wssc
+        where wssc.is_delete = 0
+        <if test="name != null and name != ''">
+            and (
+               wssc.keys like concat('%',#{name},'%')
+            or wssc.key_name like concat('%',#{name},'%')
+            or wssc.value like concat('%',#{name},'%')
+            or wssc.comment like concat('%',#{name},'%')
+            )
+        </if>
+        <if test="type != null">
+            and wssc.type = #{type}
+        </if>
+        <if test="source != null">
+            and wssc.source = #{source}
+        </if>
+        order by wssc.create_time desc
+    </select>
+
+    <!--app根据key获取值-->
+    <select id="getSystemByKey" resultType="com.aichu.dao.workstation.object.AcSysConfigDao">
+       SELECT
+            yssc.id,
+            yssc.`keys`,
+            yssc.`value`,
+            yssc.key_name as keyName,
+            yssc.COMMENT,
+            yssc.source,
+            yssc.type,
+            yssc.is_delete as isDelete,
+            DATE_FORMAT(yssc.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        FROM
+            ac_sys_config yssc
+            WHERE yssc.is_delete = 0
+            AND yssc.keys =  #{key,jdbcType=VARCHAR}
+    </select>
+
+    <!--app根据key获取值-->
+    <select id="selectNewsMoney" resultType="com.aichu.dao.workstation.object.AcSysConfigDao">
+       SELECT
+            yssc.id,
+            yssc.`keys`,
+            yssc.`value`,
+            yssc.key_name as keyName,
+            yssc.COMMENT,
+            yssc.source,
+            yssc.type,
+            yssc.is_delete as isDelete,
+            DATE_FORMAT(yssc.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        FROM
+            ac_sys_config yssc
+            WHERE yssc.is_delete = 0
+            AND yssc.key_name like concat('%',#{keyName},'%')
+    </select>
+    <!--后台系统配置修改-->
+    <update id="updateSystemConfig" parameterType="com.aichu.dao.workstation.object.AcSysConfigDao">
+        update ac_sys_config
+        <set>
+            <if test="keys != null">
+                `keys` = #{keys,jdbcType=VARCHAR},
+            </if>
+            <if test="keyName != null">
+                key_name = #{keyName,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                `value` = #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                `type` = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="source != null">
+                `source` = #{source,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--后台系统配置新增-->
+    <insert id="insertSystemConfig" parameterType="com.aichu.dao.workstation.object.AcSysConfigDao">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ac_sys_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="keys != null">
+                `keys`,
+            </if>
+            <if test="keyName != null">
+                key_name,
+            </if>
+            <if test="value != null">
+                `value`,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="source != null">
+                `source`,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="keys != null">
+                #{keys,jdbcType=VARCHAR},
+            </if>
+            <if test="keyName != null">
+                #{keyName,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=INTEGER},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据key和配置类型查询配置列表(查分销列表)-->
+    <select id="getSysSystemComfigList" resultType="com.aichu.dao.workstation.object.AcSysConfigDao">
+         select wssc.id,
+                wssc.`keys`,
+                wssc.key_name AS keyName,
+                wssc.value,
+                wssc.comment,
+                wssc.type,
+                wssc.`source`,
+                DATE_FORMAT(wssc.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_sys_config wssc
+        where wssc.is_delete = 0
+        <if test="type != null">
+            and wssc.type = #{type}
+        </if>
+        <if test="keys != null and keys != ''">
+            and wssc.`keys` = #{keys}
+        </if>
+        order by wssc.value desc
+    </select>
+
+    <!--代理主播提成比例-->
+    <select id="getSysAgentConfigList" resultType="com.aichu.dao.workstation.object.AcSysAgentConfigBackDao">
+        select
+              asac.id,
+              asac.level,
+              asac.min_user_num as minUserNum,
+              asac.max_user_num as maxUserNum,
+              asac.deduct_rate as deductRate,
+              asac.rise_earnings as riseEarnings,
+              asac.is_delete as isDelete,
+              DATE_FORMAT(asac.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_sys_agent_config asac
+        where asac.is_delete = 0
+          <if test="level != null">
+              and asac.level = #{level}
+          </if>
+        order by asac.level
+    </select>
+
+    <!--主播提成比例下拉列表-->
+    <select id="getSysAgentConfigSelectList" resultType="com.aichu.dao.workstation.object.AcUtilIdAndNameDao">
+        select asac.id,
+               asac.level as name
+        from ac_sys_agent_config asac where asac.is_delete = 0
+         order by asac.level
+    </select>
+
+    <!--系统消息列表查询-->
+    <select id="getSysMesageBackList" resultType="com.aichu.dao.workstation.object.AcSysMessageDao">
+        select
+          asm.id,
+          asm.message_title   as messageTitle,
+          asm.message_content as messageContent,
+          asm.message_type    as messageType,
+          DATE_FORMAT(asm.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_sys_message asm
+        where asm.is_delete = 0
+          <if test="name != null and name != ''">
+              and (
+                   asm.message_title like concat('%',#{name},'%')
+                or asm.message_content like concat('%',#{name},'%')
+              )
+          </if>
+        order by asm.create_time desc
+    </select>
+
+    <!--App版本管理列表-->
+    <select id="getAppVersionBackList" resultType="com.aichu.dao.workstation.object.AcSysAppVersionBackDao">
+        select
+          asav.id,
+          asav.app_name as appName,
+          asav.in_version as inVersion,
+          asav.version,
+          asav.version_url as versionUrl,
+          asav.version_desc as versionDesc,
+          asav.is_compel_update as isCompelUpdate,
+          asav.type,
+          asav.is_delete as isDelete,
+          asav.create_time as createTime
+        from ac_sys_app_version asav
+        where asav.is_delete = 0
+        <if test="name != null and name !=''">
+            and (
+                  asav.app_name like concat('%',#{name},'%')
+              or  asav.version like concat('%',#{name},'%')
+              or  asav.version_desc like like concat('%',#{name},'%')
+            )
+        </if>
+        <if test="type != null">
+            and asav.type = #{type}
+        </if>
+        order by asav.create_time desc
+    </select>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcUserScoreDaoMapper">
+
+    <!-- 根据用户评论标签信息 -->
+    <select id="userCommentLabel" parameterType="java.lang.Integer">
+        SELECT
+            asl.`name`
+        FROM
+            `ac_user_score` aus
+        LEFT JOIN `ac_sys_label` asl ON aus.comment_lable_id = asl.`id`
+        WHERE
+                aus.aim_user_id = #{aimUserId}
+            AND aus.is_delete = 0
+            AND asl.is_delete = 0
+        GROUP BY aus.comment_lable_id
+    </select>
+
+</mapper>

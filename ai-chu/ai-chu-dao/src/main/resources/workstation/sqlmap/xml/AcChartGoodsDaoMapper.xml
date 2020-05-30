@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcChartGoodsDaoMapper">
+
+    <!--后台商品列表查询-->
+    <select id="getChartGoodsList" resultType="com.aichu.dao.workstation.object.AcChartGoodsDao">
+        select
+          acg.id,
+          acg.goods_name as goodsName,
+          acg.goods_image as goodsImage,
+          acg.goods_money as goodsMoney,
+          acg.function_des as functionDes,
+          acg.is_putaway as isPutaway,
+          acg.is_delete as isDelete,
+          DATE_FORMAT(acg.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_chart_goods acg
+        where acg.is_delete = 0
+          <if test="name != null and name != ''">
+            and (
+                  acg.goods_name like concat('%',#{name},'%') or
+                  acg.function_des like concat('%',#{name},'%')
+            )
+          </if>
+          <if test="isPutaway != null">
+            and is_putaway = #{isPutaway}
+          </if>
+          order by acg.create_time desc
+    </select>
+
+    <!--后台商品购买记录查询-->
+    <select id="getChartGoodsRecordList" resultType="com.aichu.dao.workstation.object.AcChartGoodsRecordsDao">
+         select acgr.id,
+                acgr.goods_num as goodsNum,
+                acg.goods_image as goodsImage,
+                (select au.phone from ac_user au where au.id = acgr.user_id and au.is_delete = 0) as userPhone,
+                acg.goods_name as goodsName,
+                acb.order_amount as orderAmount,
+                acb.order_no as orderNo,
+                DATE_FORMAT(acb.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_chart_goods_record acgr
+          inner join ac_chart_goods acg on (acgr.goods_id = acg.id)
+          inner join ac_order_base acb on (acgr.order_id = acb.id)
+          where acgr.is_delete = 0
+            and acg.is_delete = 0
+            and acb.is_delete = 0
+            <if test="name != null and name != ''">
+             and (
+                acg.goods_name like concat('%',#{name},'%')
+                acb.order_no like concat('%',#{name},'%')
+                acgr.user_id in (select au.id from ac_user au where au.phone like concat('%',#{name},'%') and au.is_delete = 0)
+              )
+            </if>
+          order by acb.create_time desc
+    </select>
+
+</mapper>

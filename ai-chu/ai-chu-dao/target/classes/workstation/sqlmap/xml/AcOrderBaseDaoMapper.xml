@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcOrderBaseDaoMapper">
+
+    <!-- 根据用户账单信息 -->
+    <select id="userWalletBill" resultType="com.aichu.dao.workstation.object.UserWalletBillDao">
+        SELECT
+            walletBillRecord.actionDesc,
+            walletBillRecord.payType,
+            walletBillRecord.payStatus,
+            walletBillRecord.consumeType,
+            walletBillRecord.orderAmount,
+            walletBillRecord.orderCoin,
+            walletBillRecord.auditStatus,
+            walletBillRecord.weekCardPresentedCoin,
+            walletBillRecord.mouthCardPresentedCoin,
+            walletBillRecord.chartTime,
+            walletBillRecord.createTime
+        FROM
+            (
+                (SELECT
+                    (CASE
+                        WHEN aob.consume_type = 0 AND aob.pay_type = 1 THEN '微信充值'
+                        WHEN aob.consume_type = 0 AND aob.pay_type = 2 THEN '支付宝充值'
+                        WHEN aob.consume_type = 1 AND aob.pay_type = 1 THEN '提现到微信'
+                        WHEN aob.consume_type = 1 AND aob.pay_type = 2 THEN '提现到支付宝'
+                        WHEN aob.consume_type = 2 AND aob.preferential_card_type = 0 THEN '购买周卡'
+                        WHEN aob.consume_type = 2 AND aob.preferential_card_type = 1 THEN '购买月卡'
+                        WHEN aob.consume_type = 3 THEN IF(aob.user_id = #{userId},
+                            CONCAT('赠送给',
+                            (SELECT au.nick_name FROM `ac_user` au WHERE au.`id` = aob.receive_user_id AND au.is_freeze = 0 AND au.is_delete = 0),'的',
+                            (SELECT acg.goods_name FROM `ac_chart_goods_record` acgr LEFT JOIN `ac_chart_goods` acg ON acgr.goods_id = acg.`id` WHERE acgr.order_id = aob.`id` AND acgr.is_delete = 0 AND acg.is_delete = 0) , 'x',
+                            (SELECT acgr.goods_num FROM `ac_chart_goods_record` acgr WHERE acgr.order_id = aob.`id` AND acgr.is_delete = 0)),
+                            CONCAT('收到', (SELECT auu.nick_name FROM `ac_user` auu WHERE auu.`id` = aob.user_id AND auu.is_freeze = 0 AND auu.is_delete = 0),'的',
+                            (SELECT acg.goods_name FROM `ac_chart_goods_record` acgr LEFT JOIN `ac_chart_goods` acg ON acgr.goods_id = acg.`id` WHERE acgr.order_id = aob.`id` AND acgr.is_delete = 0 AND acg.is_delete = 0) , 'x',
+                            (SELECT acgr.goods_num FROM `ac_chart_goods_record` acgr WHERE acgr.order_id = aob.`id` AND acgr.is_delete = 0))
+                            )
+                        WHEN aob.consume_type = 4 THEN IF(aob.user_id = #{userId},
+                            CONCAT('与', (SELECT au.nick_name FROM `ac_user` au WHERE au.`id` = aob.receive_user_id AND au.is_freeze = 0 AND au.is_delete = 0),'聊天,视频',
+                             FLOOR(aob.order_amount / (SELECT aua.chart_cost FROM `ac_user` aua WHERE aua.`id` = aob.receive_user_id AND aua.is_freeze = 0 AND aua.is_delete = 0)),'分钟'),
+                            CONCAT('与', (SELECT aub.nick_name FROM `ac_user` aub WHERE aub.`id` = aob.user_id AND aub.is_freeze = 0 AND aub.is_delete = 0),'聊天,视频',
+                             FLOOR(aob.order_amount / (SELECT auc.chart_cost FROM `ac_user` auc WHERE auc.`id` = aob.user_id AND auc.is_freeze = 0 AND auc.is_delete = 0)),'分钟')
+                            )
+                        WHEN aob.consume_type = 5 THEN '代理提成金额'
+                        ELSE
+                            ''
+                        END
+                    ) AS actionDesc,
+                    (CASE
+                        WHEN aob.receive_user_id = #{userId}
+                           THEN CASE WHEN aob.pay_use = 1 THEN 1 ELSE 0 END
+                        ELSE
+                           CASE WHEN aob.pay_use = 1 THEN 0 ELSE 1 END END
+                    ) AS payType,
+                    aob.pay_status AS payStatus,
+                    aob.consume_type AS consumeType,
+                    aob.order_amount AS orderAmount,
+                    aob.order_coin AS orderCoin,
+                    (
+                        CASE
+                            WHEN aob.consume_type AND aob.pay_use THEN (SELECT aow.with_draw_status FROM `ac_order_withdraw` aow WHERE aow.order_id = aob.`id` AND aob.is_delete = 0)
+                            ELSE
+                                null
+                            END
+                    ) AS auditStatus,
+                    null AS weekCardPresentedCoin,
+                    null AS mouthCardPresentedCoin,
+                    (CASE
+                        WHEN
+                            aob.user_id = #{userId} THEN FLOOR(aob.order_amount / (SELECT au.chart_cost FROM `ac_user` au WHERE au.`id` = aob.receive_user_id AND au.is_freeze = 0 AND au.is_delete = 0))
+                        ELSE
+                            FLOOR(aob.order_amount / (SELECT auu.chart_cost FROM `ac_user` auu WHERE auu.`id` = aob.user_id AND auu.is_freeze = 0 AND auu.is_delete = 0))
+                        END
+                    ) AS chartTime,
+                    DATE_FORMAT(aob.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        (aob.user_id = #{userId} OR aob.receive_user_id = #{userId})
+                    AND aob.is_delete = 0
+                    <if test="chooseDate != null and chooseDate != ''">
+                        AND DATE_FORMAT(aob.create_time,'%Y-%m') = #{chooseDate}
+                    </if>
+                )
+                UNION ALL
+                (
+                    SELECT
+                        '每日签到' AS actionDesc,
+                        0 AS payType,
+                        null AS payStatus,
+                        6 AS consumeType,
+                        0 AS orderAmount,
+                        (ausr.week_coin+ausr.coin+ausr.mouth_coin) AS orderCoin,
+                        null AS auditStatus,
+                        ausr.week_coin AS weekCardPresentedCoin,
+                        ausr.mouth_coin AS mouthCardPresentedCoin,
+                        null AS chartTime,
+                        DATE_FORMAT(ausr.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+                    FROM
+                        `ac_user_sign_record` ausr
+                    WHERE
+                            ausr.user_id = #{userId}
+                        AND ausr.is_delete = 0
+                        <if test="chooseDate != null and chooseDate != ''">
+                            AND DATE_FORMAT(ausr.create_time,'%Y-%m') = #{chooseDate}
+                        </if>
+                )
+            ) AS walletBillRecord
+            ORDER BY walletBillRecord.createTime DESC
+    </select>
+
+    <!--后台查询订单记录列表-->
+    <select id="getOrderBaseList" resultType="com.aichu.dao.workstation.object.AcOrderBaseBackDao">
+         select aob.id,
+                aob.order_no as orderNo,
+                aob.order_amount as orderAmount,
+                aob.consume_type as consumeType,
+                aob.pay_status as payStatus,
+                aob.pay_type as payType,
+                aob.pay_use as payUse,
+                aob.preferential_card_type as perferentialCardType,
+                aob.user_id as userId,
+                (select au.phone from ac_user au where au.id = aob.user_id and au.is_delete = 0) as userPhone,
+                aopr.pay_trade_no as payTradeNo,
+                aopr.out_trade_no as outTradNo,
+                aopr.order_type as orderType,
+                DATE_FORMAT(aob.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_order_base aob
+          left join ac_order_pay_record aopr on (aob.id = aopr.order_id)
+        where aob.is_delete = 0
+          and aopr.is_delete = 0
+          <if test="name != null and name != ''">
+              and (
+                     aob.order_no like concat('%',#{name},'%')
+                  or aopr.pay_trade_no like concat('%',#{name},'%')
+                  or aopr.out_trade_no like concat('%',#{name},'%')
+                  or aob.user_id in (select au.id from ac_user au where au.phone like concat('%',#{name},'%') and au.is_delete =0)
+              )
+          </if>
+          <if test="consumeType != null">
+              and aob.consume_type = #{consumeType}
+          </if>
+          <if test="preferentialCardType != null">
+              and aob.preferential_card_type = #{preferentialCardType}
+          </if>
+          <if test="payUse != null">
+              and aob.pay_use = #{payUse}
+          </if>
+          <if test="startCreateTime != null and startCreateTime != ''">
+              and #{startCreateTime,jdbcType=VARCHAR} &lt;= aob.create_time
+          </if>
+          <if test="endCreateTime != null and endCreateTime != ''">
+              and #{endCreateTime,jdbcType=VARCHAR} &gt;= aob.create_time
+          </if>
+          order by aob.create_time desc
+    </select>
+
+    <!--后台退款列表查询-->
+    <select id="getOrderBaseRefundList" resultType="com.aichu.dao.workstation.object.AcOrderBaseRefundBackDao">
+         select aorr.id,
+                aorr.refund_amount as refundAmount,
+                aorr.refund_reason as refundReason,
+                aorr.refund_status as refundStatus,
+                DATE_FORMAT(aorr.deal_time,'%Y-%m-%d %H:%i:%s') AS dealTime,
+                aob.order_no as orderNo,
+                aob.consume_type as consumeType,
+                (select au.phone from ac_user au where au.id = aob.user_id and aob.is_delete = 0) as userPhone,
+                DATE_FORMAT(aorr.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_order_refund_record aorr
+          inner join ac_order_base aob on (aorr.order_id = aob.id)
+        where aorr.is_delete = 0
+          <if test="name != null and name != ''">
+            and (
+                 aorr.refund_reason like concat('%',#{name},'%')
+              or aob.order_no like concat('%',#{name},'%')
+              or aob.user_id in (select au.id from ac_user au where au.phone like concat('%',#{name},'%') and aob.is_delete = 0)
+            )
+          </if>
+          <if test="refundStatus != null">
+            and aorr.refund_status = #{refundStatus}
+          </if>
+          <if test="consumeType != null">
+            and aob.consume_type = #{consumeType}
+          </if>
+          <if test="startCreateTime != null and startCreateTime != ''">
+            and #{startCreateTime,jdbcType=VARCHAR} &lt;= aorr.create_time
+          </if>
+          <if test="endCreateTime != null and endCreateTime != ''">
+            and #{endCreateTime,jdbcType=VARCHAR} &gt;= aorr.create_time
+          </if>
+        order by aorr.create_time desc
+    </select>
+
+    <!--后台提现列表查询-->
+    <select id="getOrderWithdrawList" resultType="com.aichu.dao.workstation.object.AcOrderWithdrawBackDao">
+        select  aow.id,
+                aow.with_draw_out_trade_no as withdrawOutTradeNo,
+                aow.with_draw_des as withdrawDes,
+                aow.with_draw_money as withdrawMoney,
+                aow.with_draw_status as withdrawStatus,
+                aow.with_draw_type as withdrawType,
+                aob.order_no as orderNo,
+                (select au.phone from ac_user au where au.id = aob.user_id and aob.is_delete = 0) as userPhone,
+                DATE_FORMAT(aow.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_order_withdraw aow
+          inner join ac_order_base aob on (aow.order_id = aob.id)
+        where aow.is_delete = 0
+            <if test="name != null and name != ''">
+                and (
+                    aow.with_draw_out_trade_no like concat('%',#{name},'%')
+                 or aob.order_no like concat('%',#{name},'%')
+                 or aow.with_draw_des like concat('%',#{name},'%')
+                 or aob.user_id in (select au.id from ac_user au where au.phone like concat('%',#{name},'%') and aob.is_delete = 0)
+                )
+            </if>
+            <if test="withDrawStatus != null">
+                and aow.with_draw_status = #{withDrawStatus}
+            </if>
+            <if test="startCreateTime != null and startCreateTime != ''">
+                and #{startCreateTime,jdbcType=VARCHAR} &lt;= aow.create_time
+            </if>
+            <if test="endCreateTime != null and endCreateTime != ''">
+                and #{endCreateTime,jdbcType=VARCHAR} &gt;= aow.create_time
+            </if>
+        order by aow.create_time desc
+    </select>
+
+</mapper>

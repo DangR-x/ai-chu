@@ -1,0 +1,10 @@
+2019-07-17 17:27:43.520 [main] INFO  com.wenzu.app.WenZuAppApplicationTests - Starting WenZuAppApplicationTests on SKY-20190609QMD with PID 101188 (started by Administrator in E:\WenZuGitRepository\wen-zu\wen-zu-app)
+2019-07-17 17:27:43.520 [main] INFO  com.wenzu.app.WenZuAppApplicationTests - The following profiles are active: dev
+2019-07-17 17:27:44.539 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.com.wenzu.manager.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.com.wenzu.manager.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b98e799a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-07-17 17:27:45.498 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-07-17 17:27:45.884 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2019-07-17 17:27:46.165 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2019-07-17 17:27:46.183 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-07-17 17:27:46.206 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2019-07-17 17:27:46.220 [main] INFO  com.wenzu.app.WenZuAppApplicationTests - Started WenZuAppApplicationTests in 3.024 seconds (JVM running for 3.529)
+2019-07-17 17:27:46.504 [Thread-1] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'

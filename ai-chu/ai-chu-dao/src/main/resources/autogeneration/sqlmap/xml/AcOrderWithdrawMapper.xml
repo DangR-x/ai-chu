@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.autogeneration.mapper.AcOrderWithdrawMapper">
+  <resultMap id="BaseResultMap" type="com.aichu.dao.autogeneration.object.AcOrderWithdrawDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="with_draw_out_trade_no" jdbcType="VARCHAR" property="withDrawOutTradeNo" />
+    <result column="with_draw_des" jdbcType="VARCHAR" property="withDrawDes" />
+    <result column="with_draw_money" jdbcType="INTEGER" property="withDrawMoney" />
+    <result column="with_draw_status" jdbcType="TINYINT" property="withDrawStatus" />
+    <result column="with_draw_nick_name" jdbcType="VARCHAR" property="withDrawNickName" />
+    <result column="with_draw_account" jdbcType="VARCHAR" property="withDrawAccount" />
+    <result column="with_draw_type" jdbcType="TINYINT" property="withDrawType" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_id, with_draw_out_trade_no, with_draw_des, with_draw_money, with_draw_status, 
+    with_draw_nick_name, with_draw_account, with_draw_type, is_delete, create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ac_order_withdraw
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ac_order_withdraw
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ac_order_withdraw
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawExample">
+    delete from ac_order_withdraw
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ac_order_withdraw (order_id, with_draw_out_trade_no, with_draw_des, 
+      with_draw_money, with_draw_status, with_draw_nick_name, 
+      with_draw_account, with_draw_type, is_delete, 
+      create_time)
+    values (#{orderId,jdbcType=INTEGER}, #{withDrawOutTradeNo,jdbcType=VARCHAR}, #{withDrawDes,jdbcType=VARCHAR}, 
+      #{withDrawMoney,jdbcType=INTEGER}, #{withDrawStatus,jdbcType=TINYINT}, #{withDrawNickName,jdbcType=VARCHAR}, 
+      #{withDrawAccount,jdbcType=VARCHAR}, #{withDrawType,jdbcType=TINYINT}, #{isDelete,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ac_order_withdraw
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="withDrawOutTradeNo != null">
+        with_draw_out_trade_no,
+      </if>
+      <if test="withDrawDes != null">
+        with_draw_des,
+      </if>
+      <if test="withDrawMoney != null">
+        with_draw_money,
+      </if>
+      <if test="withDrawStatus != null">
+        with_draw_status,
+      </if>
+      <if test="withDrawNickName != null">
+        with_draw_nick_name,
+      </if>
+      <if test="withDrawAccount != null">
+        with_draw_account,
+      </if>
+      <if test="withDrawType != null">
+        with_draw_type,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="withDrawOutTradeNo != null">
+        #{withDrawOutTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawDes != null">
+        #{withDrawDes,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawMoney != null">
+        #{withDrawMoney,jdbcType=INTEGER},
+      </if>
+      <if test="withDrawStatus != null">
+        #{withDrawStatus,jdbcType=TINYINT},
+      </if>
+      <if test="withDrawNickName != null">
+        #{withDrawNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawAccount != null">
+        #{withDrawAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawType != null">
+        #{withDrawType,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawExample" resultType="java.lang.Long">
+    select count(*) from ac_order_withdraw
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ac_order_withdraw
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.withDrawOutTradeNo != null">
+        with_draw_out_trade_no = #{record.withDrawOutTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.withDrawDes != null">
+        with_draw_des = #{record.withDrawDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.withDrawMoney != null">
+        with_draw_money = #{record.withDrawMoney,jdbcType=INTEGER},
+      </if>
+      <if test="record.withDrawStatus != null">
+        with_draw_status = #{record.withDrawStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.withDrawNickName != null">
+        with_draw_nick_name = #{record.withDrawNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.withDrawAccount != null">
+        with_draw_account = #{record.withDrawAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.withDrawType != null">
+        with_draw_type = #{record.withDrawType,jdbcType=TINYINT},
+      </if>
+      <if test="record.isDelete != null">
+        is_delete = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ac_order_withdraw
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      with_draw_out_trade_no = #{record.withDrawOutTradeNo,jdbcType=VARCHAR},
+      with_draw_des = #{record.withDrawDes,jdbcType=VARCHAR},
+      with_draw_money = #{record.withDrawMoney,jdbcType=INTEGER},
+      with_draw_status = #{record.withDrawStatus,jdbcType=TINYINT},
+      with_draw_nick_name = #{record.withDrawNickName,jdbcType=VARCHAR},
+      with_draw_account = #{record.withDrawAccount,jdbcType=VARCHAR},
+      with_draw_type = #{record.withDrawType,jdbcType=TINYINT},
+      is_delete = #{record.isDelete,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawDO">
+    update ac_order_withdraw
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="withDrawOutTradeNo != null">
+        with_draw_out_trade_no = #{withDrawOutTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawDes != null">
+        with_draw_des = #{withDrawDes,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawMoney != null">
+        with_draw_money = #{withDrawMoney,jdbcType=INTEGER},
+      </if>
+      <if test="withDrawStatus != null">
+        with_draw_status = #{withDrawStatus,jdbcType=TINYINT},
+      </if>
+      <if test="withDrawNickName != null">
+        with_draw_nick_name = #{withDrawNickName,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawAccount != null">
+        with_draw_account = #{withDrawAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="withDrawType != null">
+        with_draw_type = #{withDrawType,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawDO">
+    update ac_order_withdraw
+    set order_id = #{orderId,jdbcType=INTEGER},
+      with_draw_out_trade_no = #{withDrawOutTradeNo,jdbcType=VARCHAR},
+      with_draw_des = #{withDrawDes,jdbcType=VARCHAR},
+      with_draw_money = #{withDrawMoney,jdbcType=INTEGER},
+      with_draw_status = #{withDrawStatus,jdbcType=TINYINT},
+      with_draw_nick_name = #{withDrawNickName,jdbcType=VARCHAR},
+      with_draw_account = #{withDrawAccount,jdbcType=VARCHAR},
+      with_draw_type = #{withDrawType,jdbcType=TINYINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.aichu.dao.autogeneration.object.AcOrderWithdrawExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ac_order_withdraw
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

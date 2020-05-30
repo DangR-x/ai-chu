@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcShiroUtilDaoMapper">
+
+      <!--通过角色集合查询所有角色权限-->
+      <select id="getRolePermission" resultType="java.lang.Integer" parameterType="java.util.List">
+        select
+            -(-(wrd.perms_code))
+          FROM ac_admin_role_description wrd
+        where wrd.is_delete = 0 and
+              wrd.role_id in
+              <foreach collection="roleList" item="item" separator="," open="(" close=")" >
+                #{item.id, jdbcType=INTEGER}
+              </foreach>
+      </select>
+
+      <!--通过角色ID查询权限-->
+      <select id="getRolePermissionToRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+            select
+            -(-(wrd.perms_code))
+            FROM ac_admin_role_description wrd
+            where wrd.is_delete = 0 and
+            wrd.role_id = #{roleId}
+     </select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcSysBannerDaoMapper">
+
+      <!--后台系统Banner管理列表查询-->
+      <select id="getBannerBackList" resultType="com.aichu.dao.workstation.object.AcSysBannerBackDao">
+          select  nsb.id,
+                  nsb.banner_url AS bannerUrl,
+                  nsb.banner_type AS bannerType,
+                  nsb.banner_type_code AS bannerTypeCode,
+                  nsb.banner_desc AS bannerDesc,
+                  DATE_FORMAT(nsb.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+          from ac_sys_banner nsb
+            where nsb.is_delete = 0
+            <if test="name != null and name != ''">
+                and (
+                     nsb.banner_type_code like concat('%',#{name},'%')
+                  or nsb.banner_desc like concat('%',#{name},'%')
+              )
+            </if>
+            <if test="type != null">
+                and nsb.banner_type = #{type}
+            </if>
+          order by nsb.create_time desc
+      </select>
+
+</mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcAdminUserRoleDaoMapper">
+
+  <select id="getRoleToUserId" resultType="com.aichu.dao.workstation.object.AcAdminRoleDao" parameterType="java.lang.Integer">
+    select  war.id id,
+            war.role_code roleCode,
+            war.role_name roleName
+        from ac_admin_user_role wzur
+          inner join ac_admin_role war on (wzur.role_id = war.id)
+    where wzur.user_id = #{userId} and war.is_delete = 0;
+  </select>
+</mapper>

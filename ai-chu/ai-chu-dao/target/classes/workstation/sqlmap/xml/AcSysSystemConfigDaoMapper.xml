@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcSysSystemConfigDaoMapper">
+
+    <!--查询爱触用户协议-->
+    <select id="systemPolicy" resultType="com.aichu.dao.autogeneration.object.AcSysConfigDO">
+        SELECT
+            ascf.*,
+            ascf.key_name AS keyName
+        FROM
+            `ac_sys_config` ascf
+        WHERE
+                ascf.source = 2
+            <if test="policyType != null and policyType == 0">
+        AND ascf.`keys` = 'privacyPolicy'
+    </if>
+            <if test="policyType != null and policyType == 1">
+                AND ascf.`keys` = 'userPolicy'
+            </if>
+            <if test="policyType != null and policyType == 2">
+                AND ascf.`keys` = 'chargePolicy'
+            </if>
+            <if test="policyType != null and policyType == 3">
+                AND ascf.`keys` = 'aboutUs'
+            </if>
+            <if test="policyType != null and policyType == 4">
+                AND ascf.`keys` = 'chargeRate'
+            </if>
+            <if test="policyType != null and policyType == 5">
+                AND ascf.`keys` = 'anchorDeductRate'
+            </if>
+            <if test="policyType != null and policyType == 6">
+                AND ascf.`keys` = 'agencyChargeRules'
+            </if>
+            <if test="policyType != null and policyType == 7">
+                AND ascf.`keys` = 'customerServerWeChat'
+            </if>
+            <if test="policyType != null and policyType == 8">
+                AND ascf.`keys` = 'chartWarnTime'
+            </if>
+            <if test="policyType != null and policyType == 9">
+                AND ascf.`keys` = 'generalizeLink'
+            </if>
+           AND ascf.type = 0
+           AND ascf.is_delete = 0
+    </select>
+
+    <!--后台充值配置列表-->
+    <select id="getSysChargeConfigList" resultType="com.aichu.dao.workstation.object.AcSysChargeConfigDao">
+        select ascc.id,
+               ascc.charge_amount as chargeAmount,
+               ascc.charge_coin as chargeCoin,
+               DATE_FORMAT(ascc.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_sys_charge_config ascc
+        where ascc.is_delete = 0
+        order by ascc.create_time desc
+    </select>
+
+</mapper>

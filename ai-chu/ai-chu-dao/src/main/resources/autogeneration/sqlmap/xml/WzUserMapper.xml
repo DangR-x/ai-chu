@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.autogeneration.mapper.WzUserMapper">
+  <resultMap id="BaseResultMap" type="com.aichu.dao.autogeneration.object.WzUserDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="wz_uid" jdbcType="VARCHAR" property="wzUid" />
+    <result column="first_name" jdbcType="VARCHAR" property="firstName" />
+    <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="cover_family" jdbcType="VARCHAR" property="coverFamily" />
+    <result column="cover_society" jdbcType="VARCHAR" property="coverSociety" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="deathday" jdbcType="VARCHAR" property="deathday" />
+    <result column="death_criterion" jdbcType="TINYINT" property="deathCriterion" />
+    <result column="deathday_lunar" jdbcType="VARCHAR" property="deathdayLunar" />
+    <result column="birthday_lunar" jdbcType="VARCHAR" property="birthdayLunar" />
+    <result column="birth_criterion" jdbcType="TINYINT" property="birthCriterion" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="business" jdbcType="VARCHAR" property="business" />
+    <result column="occupation" jdbcType="VARCHAR" property="occupation" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="signature" jdbcType="VARCHAR" property="signature" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="family_tree_id" jdbcType="INTEGER" property="familyTreeId" />
+    <result column="family_house_id" jdbcType="VARCHAR" property="familyHouseId" />
+    <result column="ex_province_id" jdbcType="INTEGER" property="exProvinceId" />
+    <result column="ex_city_id" jdbcType="INTEGER" property="exCityId" />
+    <result column="ex_area_id" jdbcType="INTEGER" property="exAreaId" />
+    <result column="ex_address" jdbcType="VARCHAR" property="exAddress" />
+    <result column="now_province_id" jdbcType="INTEGER" property="nowProvinceId" />
+    <result column="now_city_id" jdbcType="INTEGER" property="nowCityId" />
+    <result column="now_area_id" jdbcType="INTEGER" property="nowAreaId" />
+    <result column="now_address" jdbcType="VARCHAR" property="nowAddress" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="action_user_id" jdbcType="INTEGER" property="actionUserId" />
+    <result column="is_register" jdbcType="TINYINT" property="isRegister" />
+    <result column="is_new_user" jdbcType="TINYINT" property="isNewUser" />
+    <result column="is_alive" jdbcType="TINYINT" property="isAlive" />
+    <result column="is_freeze" jdbcType="TINYINT" property="isFreeze" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, wz_uid, first_name, last_name, nick_name, head_img, cover_family, cover_society, 
+    id_card, phone, pass_word, birthday, deathday, death_criterion, deathday_lunar, birthday_lunar, 
+    birth_criterion, number, sex, business, occupation, school, signature, amount, score, 
+    family_tree_id, family_house_id, ex_province_id, ex_city_id, ex_area_id, ex_address, 
+    now_province_id, now_city_id, now_area_id, now_address, longitude, latitude, action_user_id, 
+    is_register, is_new_user, is_alive, is_freeze, is_delete, create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.aichu.dao.autogeneration.object.WzUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from wz_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wz_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from wz_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.aichu.dao.autogeneration.object.WzUserExample">
+    delete from wz_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.aichu.dao.autogeneration.object.WzUserDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into wz_user (wz_uid, first_name, last_name,
+      nick_name, head_img, cover_family,
+      cover_society, id_card, phone,
+      pass_word, birthday, deathday,
+      death_criterion, deathday_lunar, birthday_lunar,
+      birth_criterion, number, sex,
+      business, occupation, school,
+      signature, amount, score,
+      family_tree_id, family_house_id, ex_province_id,
+      ex_city_id, ex_area_id, ex_address,
+      now_province_id, now_city_id, now_area_id,
+      now_address, longitude, latitude,
+      action_user_id, is_register, is_new_user,
+      is_alive, is_freeze, is_delete,
+      create_time)
+    values (#{wzUid,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
+      #{nickName,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{coverFamily,jdbcType=VARCHAR},
+      #{coverSociety,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+      #{passWord,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{deathday,jdbcType=VARCHAR},
+      #{deathCriterion,jdbcType=TINYINT}, #{deathdayLunar,jdbcType=VARCHAR}, #{birthdayLunar,jdbcType=VARCHAR},
+      #{birthCriterion,jdbcType=TINYINT}, #{number,jdbcType=INTEGER}, #{sex,jdbcType=TINYINT},
+      #{business,jdbcType=VARCHAR}, #{occupation,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR},
+      #{signature,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
+      #{familyTreeId,jdbcType=INTEGER}, #{familyHouseId,jdbcType=VARCHAR}, #{exProvinceId,jdbcType=INTEGER},
+      #{exCityId,jdbcType=INTEGER}, #{exAreaId,jdbcType=INTEGER}, #{exAddress,jdbcType=VARCHAR},
+      #{nowProvinceId,jdbcType=INTEGER}, #{nowCityId,jdbcType=INTEGER}, #{nowAreaId,jdbcType=INTEGER},
+      #{nowAddress,jdbcType=VARCHAR}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE},
+      #{actionUserId,jdbcType=INTEGER}, #{isRegister,jdbcType=TINYINT}, #{isNewUser,jdbcType=TINYINT},
+      #{isAlive,jdbcType=TINYINT}, #{isFreeze,jdbcType=TINYINT}, #{isDelete,jdbcType=TINYINT},
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aichu.dao.autogeneration.object.WzUserDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into wz_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wzUid != null">
+        wz_uid,
+      </if>
+      <if test="firstName != null">
+        first_name,
+      </if>
+      <if test="lastName != null">
+        last_name,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="headImg != null">
+        head_img,
+      </if>
+      <if test="coverFamily != null">
+        cover_family,
+      </if>
+      <if test="coverSociety != null">
+        cover_society,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="passWord != null">
+        pass_word,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="deathday != null">
+        deathday,
+      </if>
+      <if test="deathCriterion != null">
+        death_criterion,
+      </if>
+      <if test="deathdayLunar != null">
+        deathday_lunar,
+      </if>
+      <if test="birthdayLunar != null">
+        birthday_lunar,
+      </if>
+      <if test="birthCriterion != null">
+        birth_criterion,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="business != null">
+        business,
+      </if>
+      <if test="occupation != null">
+        occupation,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="signature != null">
+        signature,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="familyTreeId != null">
+        family_tree_id,
+      </if>
+      <if test="familyHouseId != null">
+        family_house_id,
+      </if>
+      <if test="exProvinceId != null">
+        ex_province_id,
+      </if>
+      <if test="exCityId != null">
+        ex_city_id,
+      </if>
+      <if test="exAreaId != null">
+        ex_area_id,
+      </if>
+      <if test="exAddress != null">
+        ex_address,
+      </if>
+      <if test="nowProvinceId != null">
+        now_province_id,
+      </if>
+      <if test="nowCityId != null">
+        now_city_id,
+      </if>
+      <if test="nowAreaId != null">
+        now_area_id,
+      </if>
+      <if test="nowAddress != null">
+        now_address,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="actionUserId != null">
+        action_user_id,
+      </if>
+      <if test="isRegister != null">
+        is_register,
+      </if>
+      <if test="isNewUser != null">
+        is_new_user,
+      </if>
+      <if test="isAlive != null">
+        is_alive,
+      </if>
+      <if test="isFreeze != null">
+        is_freeze,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wzUid != null">
+        #{wzUid,jdbcType=VARCHAR},
+      </if>
+      <if test="firstName != null">
+        #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null">
+        #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="coverFamily != null">
+        #{coverFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="coverSociety != null">
+        #{coverSociety,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null">
+        #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="deathday != null">
+        #{deathday,jdbcType=VARCHAR},
+      </if>
+      <if test="deathCriterion != null">
+        #{deathCriterion,jdbcType=TINYINT},
+      </if>
+      <if test="deathdayLunar != null">
+        #{deathdayLunar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdayLunar != null">
+        #{birthdayLunar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthCriterion != null">
+        #{birthCriterion,jdbcType=TINYINT},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="business != null">
+        #{business,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null">
+        #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="familyTreeId != null">
+        #{familyTreeId,jdbcType=INTEGER},
+      </if>
+      <if test="familyHouseId != null">
+        #{familyHouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="exProvinceId != null">
+        #{exProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="exCityId != null">
+        #{exCityId,jdbcType=INTEGER},
+      </if>
+      <if test="exAreaId != null">
+        #{exAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="exAddress != null">
+        #{exAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nowProvinceId != null">
+        #{nowProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="nowCityId != null">
+        #{nowCityId,jdbcType=INTEGER},
+      </if>
+      <if test="nowAreaId != null">
+        #{nowAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="nowAddress != null">
+        #{nowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="actionUserId != null">
+        #{actionUserId,jdbcType=INTEGER},
+      </if>
+      <if test="isRegister != null">
+        #{isRegister,jdbcType=TINYINT},
+      </if>
+      <if test="isNewUser != null">
+        #{isNewUser,jdbcType=TINYINT},
+      </if>
+      <if test="isAlive != null">
+        #{isAlive,jdbcType=TINYINT},
+      </if>
+      <if test="isFreeze != null">
+        #{isFreeze,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.aichu.dao.autogeneration.object.WzUserExample" resultType="java.lang.Long">
+    select count(*) from wz_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update wz_user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.wzUid != null">
+        wz_uid = #{record.wzUid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstName != null">
+        first_name = #{record.firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastName != null">
+        last_name = #{record.lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickName != null">
+        nick_name = #{record.nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.headImg != null">
+        head_img = #{record.headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coverFamily != null">
+        cover_family = #{record.coverFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coverSociety != null">
+        cover_society = #{record.coverSociety,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null">
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passWord != null">
+        pass_word = #{record.passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deathday != null">
+        deathday = #{record.deathday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deathCriterion != null">
+        death_criterion = #{record.deathCriterion,jdbcType=TINYINT},
+      </if>
+      <if test="record.deathdayLunar != null">
+        deathday_lunar = #{record.deathdayLunar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthdayLunar != null">
+        birthday_lunar = #{record.birthdayLunar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthCriterion != null">
+        birth_criterion = #{record.birthCriterion,jdbcType=TINYINT},
+      </if>
+      <if test="record.number != null">
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=TINYINT},
+      </if>
+      <if test="record.business != null">
+        business = #{record.business,jdbcType=VARCHAR},
+      </if>
+      <if test="record.occupation != null">
+        occupation = #{record.occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.school != null">
+        school = #{record.school,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signature != null">
+        signature = #{record.signature,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=INTEGER},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.familyTreeId != null">
+        family_tree_id = #{record.familyTreeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.familyHouseId != null">
+        family_house_id = #{record.familyHouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exProvinceId != null">
+        ex_province_id = #{record.exProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.exCityId != null">
+        ex_city_id = #{record.exCityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.exAreaId != null">
+        ex_area_id = #{record.exAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.exAddress != null">
+        ex_address = #{record.exAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nowProvinceId != null">
+        now_province_id = #{record.nowProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.nowCityId != null">
+        now_city_id = #{record.nowCityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.nowAreaId != null">
+        now_area_id = #{record.nowAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.nowAddress != null">
+        now_address = #{record.nowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitude != null">
+        longitude = #{record.longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.latitude != null">
+        latitude = #{record.latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.actionUserId != null">
+        action_user_id = #{record.actionUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isRegister != null">
+        is_register = #{record.isRegister,jdbcType=TINYINT},
+      </if>
+      <if test="record.isNewUser != null">
+        is_new_user = #{record.isNewUser,jdbcType=TINYINT},
+      </if>
+      <if test="record.isAlive != null">
+        is_alive = #{record.isAlive,jdbcType=TINYINT},
+      </if>
+      <if test="record.isFreeze != null">
+        is_freeze = #{record.isFreeze,jdbcType=TINYINT},
+      </if>
+      <if test="record.isDelete != null">
+        is_delete = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update wz_user
+    set id = #{record.id,jdbcType=INTEGER},
+      wz_uid = #{record.wzUid,jdbcType=VARCHAR},
+      first_name = #{record.firstName,jdbcType=VARCHAR},
+      last_name = #{record.lastName,jdbcType=VARCHAR},
+      nick_name = #{record.nickName,jdbcType=VARCHAR},
+      head_img = #{record.headImg,jdbcType=VARCHAR},
+      cover_family = #{record.coverFamily,jdbcType=VARCHAR},
+      cover_society = #{record.coverSociety,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      pass_word = #{record.passWord,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=VARCHAR},
+      deathday = #{record.deathday,jdbcType=VARCHAR},
+      death_criterion = #{record.deathCriterion,jdbcType=TINYINT},
+      deathday_lunar = #{record.deathdayLunar,jdbcType=VARCHAR},
+      birthday_lunar = #{record.birthdayLunar,jdbcType=VARCHAR},
+      birth_criterion = #{record.birthCriterion,jdbcType=TINYINT},
+      number = #{record.number,jdbcType=INTEGER},
+      sex = #{record.sex,jdbcType=TINYINT},
+      business = #{record.business,jdbcType=VARCHAR},
+      occupation = #{record.occupation,jdbcType=VARCHAR},
+      school = #{record.school,jdbcType=VARCHAR},
+      signature = #{record.signature,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=INTEGER},
+      score = #{record.score,jdbcType=INTEGER},
+      family_tree_id = #{record.familyTreeId,jdbcType=INTEGER},
+      family_house_id = #{record.familyHouseId,jdbcType=VARCHAR},
+      ex_province_id = #{record.exProvinceId,jdbcType=INTEGER},
+      ex_city_id = #{record.exCityId,jdbcType=INTEGER},
+      ex_area_id = #{record.exAreaId,jdbcType=INTEGER},
+      ex_address = #{record.exAddress,jdbcType=VARCHAR},
+      now_province_id = #{record.nowProvinceId,jdbcType=INTEGER},
+      now_city_id = #{record.nowCityId,jdbcType=INTEGER},
+      now_area_id = #{record.nowAreaId,jdbcType=INTEGER},
+      now_address = #{record.nowAddress,jdbcType=VARCHAR},
+      longitude = #{record.longitude,jdbcType=DOUBLE},
+      latitude = #{record.latitude,jdbcType=DOUBLE},
+      action_user_id = #{record.actionUserId,jdbcType=INTEGER},
+      is_register = #{record.isRegister,jdbcType=TINYINT},
+      is_new_user = #{record.isNewUser,jdbcType=TINYINT},
+      is_alive = #{record.isAlive,jdbcType=TINYINT},
+      is_freeze = #{record.isFreeze,jdbcType=TINYINT},
+      is_delete = #{record.isDelete,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aichu.dao.autogeneration.object.WzUserDO">
+    update wz_user
+    <set>
+      <if test="wzUid != null">
+        wz_uid = #{wzUid,jdbcType=VARCHAR},
+      </if>
+      <if test="firstName != null">
+        first_name = #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null">
+        last_name = #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        head_img = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="coverFamily != null">
+        cover_family = #{coverFamily,jdbcType=VARCHAR},
+      </if>
+      <if test="coverSociety != null">
+        cover_society = #{coverSociety,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null">
+        pass_word = #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="deathday != null">
+        deathday = #{deathday,jdbcType=VARCHAR},
+      </if>
+      <if test="deathCriterion != null">
+        death_criterion = #{deathCriterion,jdbcType=TINYINT},
+      </if>
+      <if test="deathdayLunar != null">
+        deathday_lunar = #{deathdayLunar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdayLunar != null">
+        birthday_lunar = #{birthdayLunar,jdbcType=VARCHAR},
+      </if>
+      <if test="birthCriterion != null">
+        birth_criterion = #{birthCriterion,jdbcType=TINYINT},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="business != null">
+        business = #{business,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null">
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="familyTreeId != null">
+        family_tree_id = #{familyTreeId,jdbcType=INTEGER},
+      </if>
+      <if test="familyHouseId != null">
+        family_house_id = #{familyHouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="exProvinceId != null">
+        ex_province_id = #{exProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="exCityId != null">
+        ex_city_id = #{exCityId,jdbcType=INTEGER},
+      </if>
+      <if test="exAreaId != null">
+        ex_area_id = #{exAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="exAddress != null">
+        ex_address = #{exAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="nowProvinceId != null">
+        now_province_id = #{nowProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="nowCityId != null">
+        now_city_id = #{nowCityId,jdbcType=INTEGER},
+      </if>
+      <if test="nowAreaId != null">
+        now_area_id = #{nowAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="nowAddress != null">
+        now_address = #{nowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="actionUserId != null">
+        action_user_id = #{actionUserId,jdbcType=INTEGER},
+      </if>
+      <if test="isRegister != null">
+        is_register = #{isRegister,jdbcType=TINYINT},
+      </if>
+      <if test="isNewUser != null">
+        is_new_user = #{isNewUser,jdbcType=TINYINT},
+      </if>
+      <if test="isAlive != null">
+        is_alive = #{isAlive,jdbcType=TINYINT},
+      </if>
+      <if test="isFreeze != null">
+        is_freeze = #{isFreeze,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aichu.dao.autogeneration.object.WzUserDO">
+    update wz_user
+    set wz_uid = #{wzUid,jdbcType=VARCHAR},
+      first_name = #{firstName,jdbcType=VARCHAR},
+      last_name = #{lastName,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      cover_family = #{coverFamily,jdbcType=VARCHAR},
+      cover_society = #{coverSociety,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      pass_word = #{passWord,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      deathday = #{deathday,jdbcType=VARCHAR},
+      death_criterion = #{deathCriterion,jdbcType=TINYINT},
+      deathday_lunar = #{deathdayLunar,jdbcType=VARCHAR},
+      birthday_lunar = #{birthdayLunar,jdbcType=VARCHAR},
+      birth_criterion = #{birthCriterion,jdbcType=TINYINT},
+      number = #{number,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=TINYINT},
+      business = #{business,jdbcType=VARCHAR},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER},
+      family_tree_id = #{familyTreeId,jdbcType=INTEGER},
+      family_house_id = #{familyHouseId,jdbcType=VARCHAR},
+      ex_province_id = #{exProvinceId,jdbcType=INTEGER},
+      ex_city_id = #{exCityId,jdbcType=INTEGER},
+      ex_area_id = #{exAreaId,jdbcType=INTEGER},
+      ex_address = #{exAddress,jdbcType=VARCHAR},
+      now_province_id = #{nowProvinceId,jdbcType=INTEGER},
+      now_city_id = #{nowCityId,jdbcType=INTEGER},
+      now_area_id = #{nowAreaId,jdbcType=INTEGER},
+      now_address = #{nowAddress,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      action_user_id = #{actionUserId,jdbcType=INTEGER},
+      is_register = #{isRegister,jdbcType=TINYINT},
+      is_new_user = #{isNewUser,jdbcType=TINYINT},
+      is_alive = #{isAlive,jdbcType=TINYINT},
+      is_freeze = #{isFreeze,jdbcType=TINYINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.aichu.dao.autogeneration.object.WzUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from wz_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

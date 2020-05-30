@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.aichu</groupId>
+        <artifactId>ai-chu</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <groupId>com.aichu.admin</groupId>
+    <artifactId>ai-chu-admin</artifactId>
+    <packaging>jar</packaging>
+    <name>ai-chu-admin</name>
+    <description>爱触项目Web管理系统Api模块</description>
+
+    <dependencies>
+
+        <!-- 爱触Service依赖 -->
+        <dependency>
+            <groupId>com.aichu.service</groupId>
+            <artifactId>ai-chu-service</artifactId>
+            <version>${aichu.version}</version>
+        </dependency>
+        <!-- 爱触CommonUtil依赖 -->
+        <dependency>
+            <groupId>com.aichu.common.util</groupId>
+            <artifactId>ai-chu-common-util</artifactId>
+            <version>${aichu.version}</version>
+        </dependency>
+
+        <!-- SpringBoot依赖  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mysql 驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--spring切面aop依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- Jar打包运行资源 -->
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

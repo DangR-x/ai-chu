@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcUserDaoMapper">
+
+    <resultMap id="BaseResultMap" type="com.aichu.dao.autogeneration.object.AcUserDO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="ac_uid" jdbcType="VARCHAR" property="acUid" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="sex" jdbcType="TINYINT" property="sex" />
+        <result column="coin" jdbcType="INTEGER" property="coin" />
+        <result column="im_token" jdbcType="VARCHAR" property="imToken" />
+        <result column="chart_cost" jdbcType="INTEGER" property="chartCost" />
+        <result column="birth_date" jdbcType="VARCHAR" property="birthDate" />
+        <result column="height_label_id" jdbcType="INTEGER" property="heightLabelId" />
+        <result column="weight_label_id" jdbcType="INTEGER" property="weightLabelId" />
+        <result column="occupation_label_id" jdbcType="INTEGER" property="occupationLabelId" />
+        <result column="constellation_label_id" jdbcType="INTEGER" property="constellationLabelId" />
+        <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+        <result column="city_id" jdbcType="INTEGER" property="cityId" />
+        <result column="area_id" jdbcType="INTEGER" property="areaId" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+        <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+        <result column="impression_label_id" jdbcType="VARCHAR" property="impressionLabelId" />
+        <result column="signature" jdbcType="VARCHAR" property="signature" />
+        <result column="agent_level" jdbcType="INTEGER" property="agentLevel" />
+        <result column="is_agency" jdbcType="TINYINT" property="isAgency" />
+        <result column="is_anchor" jdbcType="VARCHAR" property="isAnchor" />
+        <result column="is_freeze" jdbcType="TINYINT" property="isFreeze" />
+        <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <!-- 根据用户电话查询用户信息 -->
+    <select id="selectAcUserByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+            au.*
+        FROM
+            `ac_user` au
+        WHERE
+                au.phone = #{phone}
+            AND au.is_delete = 0
+    </select>
+
+    <!-- 根据用户关键词查询用户信息 -->
+    <select id="selectAcUserByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+            au.*
+        FROM
+            `ac_user` au
+        WHERE
+                (au.phone = #{keyWord} OR au.ac_uid = #{keyWord})
+            AND au.is_delete = 0
+    </select>
+
+    <!-- 用户个人主页信息资料 -->
+    <resultMap id="personalHomePageMap" type="com.aichu.dao.workstation.object.PersonalHomePageDao">
+        <collection property="userPhotoAlbumList" select="com.aichu.dao.workstation.mapper.AcUserPhotoAlbumDaoMapper.userPhotoAlbumList"
+                    column="aimUserId"/>
+        <collection property="userImpressionLabel" select="com.aichu.dao.workstation.mapper.AcSysLabelDaoMapper.userImpressionLabel"
+                    column="impressionLabelId"/>
+    </resultMap>
+    <select id="personalHomePage" resultMap="personalHomePageMap">
+        SELECT
+            au.`id` AS aimUserId,
+            au.`id` AS userId,
+            au.ac_uid AS userAcId,
+            au.nick_name AS userName,
+            au.head_img AS userHead,
+            au.sex AS userSex,
+            au.impression_label_id AS impressionLabelId,
+            au.birth_date AS userBirth,
+            au.is_agency AS isAgency,
+            au.is_anchor AS isAnchor,
+            TIMESTAMPDIFF(YEAR, au.birth_date, CURDATE())  AS userAge,
+            (
+              SELECT
+                asl.`name`
+              FROM
+                `ac_sys_label` asl
+              WHERE
+                    asl.`id` = au.height_label_id
+                AND asl.is_delete = 0
+            ) AS userHeight,
+            (
+              SELECT
+                asl.`name`
+              FROM
+                `ac_sys_label` asl
+              WHERE
+                    asl.`id` = au.weight_label_id
+                AND asl.is_delete = 0
+            ) AS userWeight,
+            (
+              SELECT
+                asl.`name`
+              FROM
+                `ac_sys_label` asl
+              WHERE
+                    asl.`id` = au.occupation_label_id
+                AND asl.is_delete = 0
+            ) AS userWork,
+            (
+              SELECT
+                asl.`name`
+              FROM
+                `ac_sys_label` asl
+              WHERE
+                    asl.`id` = au.constellation_label_id
+                AND asl.is_delete = 0
+            ) AS userConstellation,
+            au.province_id AS provinceId,
+            au.city_id AS cityId,
+            au.area_id AS areaId,
+            CONCAT( asp.`name`, ascc.`name`, asa.`name`) AS userAddress,
+            au.chart_cost AS userChartCost,
+            au.signature AS userSignature,
+            (
+              SELECT
+                COUNT(aua.`id`)
+              FROM
+                `ac_user_attention` aua
+              WHERE
+                    aua.attention_id = au.`id`
+                AND aua.is_delete = 0
+            ) AS userFansNum,
+            (
+              SELECT
+                COUNT(aua.`id`)
+              FROM
+                `ac_user_attention` aua
+              WHERE
+                    aua.user_id = au.`id`
+                AND aua.is_delete = 0
+            ) AS userLike,
+            IF(
+                (
+                  SELECT
+                    COUNT(aua.`id`)
+                  FROM
+                    `ac_user_attention` aua
+                  WHERE
+                        aua.attention_id = au.`id`
+                    AND aua.user_id = #{userId}
+                    AND aua.is_delete = 0
+                ) = 0,
+                0,
+                1
+            ) AS isMyselfLike,
+            (
+              SELECT
+                SUM(aus.comment_level) / COUNT(aus.`id`)
+              FROM
+                `ac_user_score` aus
+              WHERE
+                    aus.aim_user_id = au.`id`
+                AND aus.is_delete = 0
+            ) AS userCommentScore
+        FROM
+            `ac_user` au
+        LEFT JOIN `ac_sys_province` asp ON au.province_id = asp.`id`
+        LEFT JOIN `ac_sys_city` ascc ON au.city_id = ascc.`id`
+        LEFT JOIN `ac_sys_area` asa ON au.area_id = asa.`id`
+        WHERE
+                au.ac_uid = #{aimUserAcId}
+            AND au.is_delete = 0
+    </select>
+
+    <resultMap id="userBackListMap" type="com.aichu.dao.workstation.object.AcBackUserDao">
+        <collection property="impressionLabels" select="com.aichu.dao.workstation.mapper.AcSysLabelDaoMapper.userImpressionLabel"
+                    column="impressionLabelId"/>
+    </resultMap>
+    <!--后台查询会员列表-->
+    <select id="getUserBackList" resultMap="userBackListMap" >
+         select au.id,
+                au.ac_uid as acUid,
+                au.nick_name as nickName,
+                au.head_img as headImg,
+                au.phone,
+                au.sex,
+                au.coin,
+                au.chart_cost as chartCost,
+                au.birth_date as birthDate,
+                (select asl.name from ac_sys_label asl where asl.id = au.height_label_id and asl.is_delete = 0) as heightLabelName,
+                (select asl.name from ac_sys_label asl where asl.id = au.weight_label_id and asl.is_delete = 0) as weightLabelName,
+                (select asl.name from ac_sys_label asl where asl.id = au.occupation_label_id and asl.is_delete = 0) as occupationLabelName,
+                (select asl.name from ac_sys_label asl where asl.id = au.constellation_label_id and asl.is_delete = 0) as constellationLabelName,
+                au.address,
+                au.impression_label_id as impressionLabelId,
+                au.signature,
+                au.agent_level as agentLevel,
+                au.is_agency as isAgency,
+                au.is_anchor as isAnchor,
+                au.is_freeze as isFreeze,
+                au.is_delete as isDelete,
+                au.is_black_list as isBlackList,
+                DATE_FORMAT(au.create_time, '%Y-%m-%d %H:%i:%s') as createTime
+         from ac_user au
+             left join query_user_address_view quav on (au.id = quav.id)
+         where au.is_delete = 0
+         <if test="name != null and name !='' ">
+            and (
+                quav.address like concat('%',#{name},'%')
+                or au.nick_name like concat('%',#{name},'%')
+                or au.ac_uid like concat('%',#{name},'%')
+                or au.phone like concat('%',#{name},'%')
+            )
+         </if>
+         <if test="level != null ">
+            and au.agent_level = #{level}
+         </if>
+         <if test="isFreeze != null">
+            and au.is_freeze = #{isFreeze}
+         </if>
+        order by au.create_time desc
+    </select>
+
+    <!-- 用户个人主页信息资料 -->
+    <resultMap id="userBackDetail" type="com.aichu.dao.workstation.object.AcBackUserDao">
+        <collection property="impressionLabels" select="com.aichu.dao.workstation.mapper.AcSysLabelDaoMapper.userImpressionLabel"
+                    column="impressionLabelId"/>
+    </resultMap>
+    <!--后台查询用户详情-->
+    <select id="getUserBackDetail" resultMap="userBackDetail">
+          select au.id,
+                au.ac_uid as acUid,
+                au.nick_name as nickName,
+                au.head_img as headImg,
+                au.phone,
+                au.sex,
+                au.coin,
+                au.chart_cost as chartCost,
+                au.birth_date as birthDate,
+                (select asl.name from ac_sys_label asl where asl.id = au.height_label_id and asl.is_delete = 0) as heightLabelName,
+                (select asl.name from ac_sys_label asl where asl.id = au.weight_label_id and asl.is_delete = 0) as weightLabelName,
+                (select asl.name from ac_sys_label asl where asl.id = au.occupation_label_id and asl.is_delete = 0) as occupationLabelName,
+                (select asl.name from ac_sys_label asl where asl.id = au.constellation_label_id and asl.is_delete = 0) as constellationLabelName,
+                au.address,
+                au.impression_label_id as impressionLabelId,
+                au.signature,
+                au.leader_id as leader_id,
+                au.is_freeze as isFreeze,
+                au.is_delete as isDelete,
+                (select count(*) from ac_user yus where yus.is_delete = 0 and yus.leader_id = au.id) as underlingCount,
+                DATE_FORMAT(au.create_time, '%Y-%m-%d %H:%i:%s') as createTime
+         from ac_user au
+             left join query_user_address_view quav on (au.id = quav.id)
+         where au.is_delete = 0 and au.id = #{id}
+    </select>
+
+    <!--后台查询用户第三方资料-->
+    <select id="getUserOauthList" resultType="com.aichu.dao.workstation.object.AcUserOauthDao">
+        select wuo.id,
+               wu.nick_name AS userName,
+               wuo.open_id AS openId,
+               wuo.union_id AS unionId,
+               wuo.ali_open_id AS aliCode,
+               wuo.nick_name AS nickName,
+               wuo.head_img AS headImg,
+               wuo.oauth_type AS oauthType,
+               DATE_FORMAT(wuo.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_user_oauth wuo
+          inner join ac_user wu on (wu.id = wuo.user_id)
+        where wuo.is_delete = 0
+          and wuo.user_id = #{userId}
+    </select>
+
+    <!--后台查询下级人数信息列表-->
+    <select id="getUserUnderlingBackList" resultType="com.aichu.dao.workstation.object.AcUserUnderlingBackDao">
+        select yu.id,
+               yu.ac_uid as acUid,
+               yu.nick_name as nickName,
+               yu.phone,
+               yu.birthday,
+               yu.sex,
+               yu.is_delete as isDelete,
+               (select count(*) from ac_user yus where yus.is_delete = 0 and yus.leader_id = yu.id) as underlingCount,
+               DATE_FORMAT(yu.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_user yu
+            where yu.is_delete = 0 and yu.leader_id = #{userId}
+    </select>
+
+    <!--用户关注人列表-->
+    <select id="userLikeList" resultType="com.aichu.dao.workstation.object.UserLikeDao">
+        select au.id AS userId,
+               au.ac_uid AS userAcUid,
+               au.nick_name AS userName,
+               au.head_img AS userHead
+        from ac_user_attention aua
+              left join ac_user au on aua.user_id = au.id
+        where
+                aua.attention_id = #{userId}
+            and aua.is_delete = 0
+    </select>
+
+    <!--关注人列表-->
+    <select id="getUserAttentitionBackList" resultType="com.aichu.dao.workstation.object.AcUserAttentionBackDao">
+        select au.id,
+               au.ac_uid as acUid,
+               au.nick_name as nickName,
+               au.phone,
+               au.is_freeze as isFreeze,
+               au.birth_date as birthday,
+               au.sex,
+               DATE_FORMAT(aua.create_time, '%Y-%m-%d %H:%i:%s') as createTime
+        from ac_user_attention aua
+              left join ac_user au on aua.attention_id = au.id
+        where aua.is_delete = 0
+          and aua.user_id = #{userId}
+        order by aua.create_time desc
+    </select>
+
+    <!--后台代理主播列表列表-->
+    <select id="getUserAnchorBackList" resultType="com.aichu.dao.workstation.object.AcUserAttentionBackDao">
+        select au.id,
+               au.ac_uid as acUid,
+               au.nick_name as nickName,
+               au.phone,
+               au.is_freeze as isFreeze,
+               au.birthday,
+               au.sex,
+               DATE_FORMAT(aua.create_time, '%Y-%m-%d %H:%i:%s') as createTime
+        from ac_user_anchor aua
+              left join ac_user au on aua.anchor_user_id = au.id
+        where aua.is_delete = 0
+          and aua.user_id = #{userId}
+        order by aua.create_time desc
+    </select>
+
+    <!--后台用户签到记录列表-->
+    <select id="getUserSignRecordBackList" resultType="com.aichu.dao.workstation.object.AcUserSignRecordBackDao">
+        select
+              ausr.id,
+              ausr.coin,
+              ausr.week_coin as weekCoin,
+              ausr.mouth_coin as mouthCoin,
+              DATE_FORMAT(ausr.create_time, '%Y-%m-%d %H:%i:%s') as createTime
+        from ac_user_sign_record ausr
+        where ausr.is_delete = 0
+          and ausr.user_id = #{userId}
+        order by ausr.create_time desc
+    </select>
+
+    <!--被关注人列表-->
+    <select id="getUserPassiveAttentitionBackList" resultType="com.aichu.dao.workstation.object.AcUserAttentionBackDao">
+        select au.id,
+               au.nick_name as nickName,
+               au.phone,
+               au.is_freeze as isFreeze,
+               au.sex,
+               DATE_FORMAT(au.create_time, '%Y-%m-%d %H:%i:%s') as createTime,
+               DATE_FORMAT(aua.create_time, '%Y-%m-%d %H:%i:%s') as attentionCreateTime
+        from ac_user_attention aua
+              left join ac_user au on aua.user_id = au.id
+        where aua.is_delete = 0
+          and aua.attention_id = #{userId}
+        order by aua.create_time desc
+    </select>
+
+    <!-- 爱触首页推荐信息 -->
+    <resultMap id="mainFaceRecommendMap" type="com.aichu.dao.workstation.object.MainFaceRecommendDao">
+        <association property="impressionLabel" select="com.aichu.dao.workstation.mapper.AcSysLabelDaoMapper.userImpressionLabelLimitOne"
+                    column="impressionLabelId"/>
+    </resultMap>
+    <select id="mainFaceRecommend" resultMap="mainFaceRecommendMap">
+        SELECT
+            au.`id` AS userId,
+            au.ac_uid AS userAcId,
+            au.nick_name AS userName,
+            au.signature AS userSignature,
+            au.chart_cost AS chartCost,
+            au.impression_label_id AS impressionLabelId,
+            (
+                SELECT
+                    aupa.file_url
+                FROM
+                    `ac_user_photo_album` aupa
+                WHERE
+                        aupa.user_id = au.`id`
+                    AND aupa.is_delete = 0
+                    LIMIT 1
+            ) AS userPhotoAlbum,
+            ROUND(
+                6378.138 * 2 * asin(
+                    sqrt(
+                        pow(
+                            sin(
+                                 (
+                                    au.latitude * pi() / 180 - #{latitude} * pi() / 180
+                                 ) / 2
+                            ),
+                            2
+                        ) + cos(au.latitude * pi() / 180) * cos( #{latitude} * pi() / 180) * pow(
+                             sin(
+                                 (
+                                    au.longitude * pi() / 180 - #{longitude} * pi() / 180
+                                 ) / 2
+                             ),
+                             2
+                             )
+                        )
+                    ),
+                2
+            ) * 1000 AS distance
+        FROM
+            `ac_user` au
+        WHERE
+                au.`id` != #{userId}
+            AND au.`is_anchor` = 1
+            <if test="mainFaceType != null and mainFaceType == 0">
+                AND au.`id` IN (
+                    SELECT
+                        aua.attention_id
+                    FROM
+                        `ac_user_attention` aua
+                    WHERE
+                            aua.user_id = #{userId}
+                        AND aua.is_delete = 0
+                )
+            </if>
+            <if test="mainFaceType != null and mainFaceType == 1">
+                AND au.`id` NOT IN (
+                    SELECT
+                        aua.attention_id
+                    FROM
+                        `ac_user_attention` aua
+                    WHERE
+                            aua.user_id = #{userId}
+                        AND aua.is_delete = 0
+                )
+            </if>
+            AND au.is_delete = 0
+            ORDER BY distance ASC
+    </select>
+
+    <!--被关注人列表-->
+    <select id="mainFaceAnchorFindByKeyWord" resultType="com.aichu.dao.workstation.object.MainFaceAnchorFindDao">
+        SELECT
+            au.`id` AS userId,
+            au.ac_uid AS userAcUid,
+            au.nick_name as userName,
+            au.head_img AS userHead
+        FROM
+            ac_user au
+        WHERE
+            au.is_delete = 0
+          AND (au.ac_uid like concat('%',#{keyWord},'%') OR au.nick_name like concat('%',#{keyWord},'%'))
+    </select>
+
+    <!--用户魅力榜信息-->
+    <select id="userCharmRankList" resultType="com.aichu.dao.workstation.object.UserRecordListInfoDao">
+        SELECT
+            au.`id` AS userId,
+            au.ac_uid AS userAccId,
+            au.nick_name AS userName,
+            au.head_img AS userHeadImg,
+            au.signature AS userSignature,
+            (
+                SELECT
+                    SUM(order_amount)
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        aob.receive_user_id = au.`id`
+                    AND aob.consume_type IN (3,4)
+                    AND aob.pay_status = 1
+                    AND aob.is_delete = 0
+                    <if test="timeType != null and timeType != '' and timeType == 0">
+                        AND DATE_FORMAT(aob.create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+                    </if>
+                    <if test="timeType != null and timeType != '' and timeType == 1">
+                        AND DATE_FORMAT(aob.create_time, '%Y%u') = DATE_FORMAT(NOW(), '%Y%u')
+                    </if>
+                    <if test="timeType != null and timeType != '' and timeType == 1">
+                        AND DATE_FORMAT(aob.create_time, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+                    </if>
+            ) AS totalCostCoin
+        FROM
+            `ac_user` au
+        WHERE
+                au.is_freeze = 0
+            AND au.is_delete = 0
+            ORDER BY totalCostCoin DESC
+    </select>
+
+    <!--用户魅力榜总魅力值-->
+    <select id="userTotalReceiveCoin" resultType="java.lang.Integer">
+        SELECT
+            SUM(aob.order_amount)
+        FROM
+            `ac_order_base` aob
+        WHERE
+                aob.receive_user_id = #{userId}
+            AND aob.consume_type IN (3,4)
+            AND aob.pay_status = 1
+            AND aob.is_delete = 0
+            <if test="timeType != null and timeType != '' and timeType == 0">
+                AND DATE_FORMAT(aob.create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+            </if>
+            <if test="timeType != null and timeType != '' and timeType == 1">
+                AND DATE_FORMAT(aob.create_time, '%Y%u') = DATE_FORMAT(NOW(), '%Y%u')
+            </if>
+            <if test="timeType != null and timeType != '' and timeType == 1">
+                AND DATE_FORMAT(aob.create_time, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+            </if>
+    </select>
+
+    <!--用户富豪榜信息-->
+    <select id="userRichRankList" resultType="com.aichu.dao.workstation.object.UserRecordListInfoDao">
+        SELECT
+            au.`id` AS userId,
+            au.ac_uid AS userAccId,
+            au.nick_name AS userName,
+            au.head_img AS userHeadImg,
+            au.signature AS userSignature,
+            (
+                SELECT
+                    SUM(order_amount)
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        aob.user_id = #{userId}
+                    AND aob.consume_type IN (2,3,4)
+                    AND aob.pay_use = 0
+                    AND aob.pay_status = 1
+                    AND aob.is_delete = 0
+                    <if test="timeType != null and timeType != '' and timeType == 0">
+                        AND DATE_FORMAT(aob.create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+                    </if>
+                    <if test="timeType != null and timeType != '' and timeType == 1">
+                        AND DATE_FORMAT(aob.create_time, '%Y%u') = DATE_FORMAT(NOW(), '%Y%u')
+                    </if>
+                    <if test="timeType != null and timeType != '' and timeType == 1">
+                        AND DATE_FORMAT(aob.create_time, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+                    </if>
+            ) AS totalCostCoin
+        FROM
+            `ac_user` au
+        WHERE
+                au.is_freeze = 0
+            AND au.is_delete = 0
+            ORDER BY totalCostCoin DESC
+    </select>
+
+    <!--用户富豪榜我的消费-->
+    <select id="userTotalCostCoin" resultType="java.lang.Integer">
+        SELECT
+            SUM(aob.order_amount)
+        FROM
+            `ac_order_base` aob
+        WHERE
+                aob.user_id = #{userId}
+            AND aob.consume_type IN (2,3,4)
+            AND aob.pay_use = 0
+            AND aob.pay_status = 1
+            AND aob.is_delete = 0
+            <if test="timeType != null and timeType != '' and timeType == 0">
+                AND DATE_FORMAT(aob.create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+            </if>
+            <if test="timeType != null and timeType != '' and timeType == 1">
+                AND DATE_FORMAT(aob.create_time, '%Y%u') = DATE_FORMAT(NOW(), '%Y%u')
+            </if>
+            <if test="timeType != null and timeType != '' and timeType == 1">
+                AND DATE_FORMAT(aob.create_time, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+            </if>
+    </select>
+
+    <!--用户视频通话列表-->
+    <select id="userVideoRecord" resultType="com.aichu.dao.workstation.object.UserVideoRecordDao">
+        SELECT
+            au.id AS userId,
+            au.ac_uid AS userAcUid,
+            au.nick_name AS userName,
+            au.head_img AS userHead,
+            aupr.tel_time AS telTime,
+            aupr.create_time AS telCreateTime
+        FROM
+            ac_user_phone_record aupr
+        LEFT JOIN ac_user au on aupr.tel_user_id = au.`id`
+        WHERE
+                aupr.user_id = #{userId}
+            AND aupr.is_delete = 0
+            AND au.is_delete = 0
+            ORDER BY aupr.create_time DESC
+    </select>
+
+
+    <!--用户视频通话列表-->
+    <select id="userMessageList" resultType="com.aichu.dao.workstation.object.UserMessageDao">
+        SELECT
+            asm.id AS messageId,
+            asm.message_title AS messageTitle,
+            asm.message_content AS messageContent,
+            asm.message_type AS messageType,
+            aumr.is_read AS isRead,
+            DATE_FORMAT(asm.create_time, '%Y-%m-%d %H:%i:%s') AS createTime
+        FROM
+            ac_user_message_read aumr
+        LEFT JOIN ac_sys_message asm on aumr.message_id = asm.`id`
+        WHERE
+                aumr.user_id = #{userId}
+            AND aumr.is_delete = 0
+            AND asm.is_delete = 0
+            ORDER BY asm.create_time DESC
+    </select>
+    <!--后台首页总注册人数-->
+    <select id="selectPeopleCount" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          ac_user
+    </select>
+    <!--后台首页日注册人数-->
+    <select id="selectRegisterCount" resultType="com.aichu.dao.workstation.object.ActiveUserDao">
+   SELECT
+    count(1) as number,
+    substr(au.create_time,1,10)  as date
+    from ac_user as au
+    where  au.create_time like concat(date_format(now(),'%Y-%m'),'%')
+    group by substr(au.create_time,1,10)
+    </select>
+    <!--后台首页日活跃人数-->
+    <select id="selectActiveCount" resultType="com.aichu.dao.workstation.object.ActiveUserDao">
+    SELECT
+      count(1) as number,
+      substr(au.last_operation_time,1,10)  as date
+    from ac_user as au
+    where  au.last_operation_time like concat(date_format(now(),'%Y-%m'),'%')
+    group by substr(au.last_operation_time,1,10)
+    </select>
+
+    <!--首頁报表单当日消費数据-->
+    <select id="getConsumeCount" resultType="com.aichu.dao.workstation.object.AgencyDataDao">
+     SELECT
+      Sum(aob.order_amount) AS anchor,
+	  (SELECT
+          Sum(aob.order_amount)
+        FROM
+          ac_order_base aob
+        WHERE
+          aob.pay_use=0
+        AND aob.pay_status=7
+		AND aob.consume_type =5
+        AND date(aob.create_time) = curdate()
+		AND aob.is_delete=0) AS agency
+    FROM
+      ac_order_base aob
+    WHERE
+      aob.pay_use=0
+    AND aob.pay_status=7
+	AND aob.consume_type BETWEEN 3 AND 4
+    AND date(aob.create_time) = curdate()
+	AND aob.is_delete=0
+    </select>
+    <!--首頁报表当日充值数据-->
+    <select id="getRechargeCount" resultType="java.lang.String">
+    SELECT
+      Sum(aob.order_amount)
+    FROM
+      ac_order_base aob
+    WHERE
+      aob.pay_use=1
+    AND aob.pay_status=7
+    AND date(aob.create_time) = curdate()
+    AND aob.is_delete = 0
+    </select>
+
+    <!--后台用户通话记录列表-->
+    <select id="getUserPhoneRecordBackList" resultType="com.aichu.dao.workstation.object.AcUserPhoneRecordBackDao">
+        select
+              aupr.id,
+              (select au.phone from ac_user au where au.id = aupr.user_id and au.is_delete = 0 ) as userPhone,
+              (select au.phone from ac_user au where au.id = aupr.tel_user_id and au.is_delete = 0 ) as teUserPhone,
+              aupr.tel_time as telTime,
+              case
+              when aupr.user_id = #{userId}
+                then 1
+              when aupr.tel_user_id = #{userId}
+                then 0
+              else 2 end as type,
+              DATE_FORMAT(aupr.create_time, '%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_user_phone_record aupr
+        where aupr.is_delete = 0
+          and (
+               aupr.user_id = #{userId}
+            or aupr.tel_user_id = #{userId}
+          )
+        order by aupr.create_time desc
+    </select>
+
+</mapper>

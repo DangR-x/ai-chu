@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ai-chu-admin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ai-chu-app" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ai-chu-common-util" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ai-chu-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ai-chu-manager-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ai-chu-service" charset="UTF-8" />
+  </component>
+</project>

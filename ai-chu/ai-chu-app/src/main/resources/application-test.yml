@@ -1,0 +1,35 @@
+#spring 数据源信息
+spring:
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 50MB
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://rm-wz980mo87m966r02hvo.mysql.rds.aliyuncs.com:3306/866_aichu_dev?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    username: 866_aichu
+    password: 'wwsl866aichu'
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000
+    password: wenzu123456789
+    jedis:
+      pool:
+        # max-active: 30
+        min-idle: 10
+        max-idle: 100
+        max-wait: 1000
+
+#日志配置信息
+logback:
+  logDir: log/test
+
+logging:
+  level:
+    com.aichu.app.api: debug
+    com.aichu.service.api.impl: debug
+    com.aichu.manager: debug
+    com.aichu.dao.autogeneration.mapper: debug
+    com.aichu.dao.workstation.mapper: debug

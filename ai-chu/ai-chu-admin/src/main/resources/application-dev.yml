@@ -1,0 +1,96 @@
+#spring 数据源信息
+spring:
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 50MB
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://rm-wz980mo87m966r02hvo.mysql.rds.aliyuncs.com:3306/866_aichu_dev?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    username: mxnt
+    password: Mxsd2016
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000
+    password: wenzu123456789
+    jedis:
+      pool:
+        # max-active: 30
+        min-idle: 10
+        max-idle: 100
+        max-wait: 1000
+
+#微信配置参数信息
+wxConfig:
+  wxAppId: wxc585f47c6385e1b2
+  wxSecret: e25f3458cd9fd9e6fae1893e18d31838
+  wxMchId: 1552596891
+  wxMchKey: a86wenzua86wenzua86wenzua86wenzu
+  wxNormalNotifyUrl: http://47.112.169.89:88/wx/pay/wxAppNormalOrderCallBack
+  wxRefundNotifyUrl: http://47.112.169.89:88/wx/refund/wxAppRefundOrderCallBack
+
+#阿里配置参数信息
+aliConfig:
+  #即创建应用后生成
+  aliAppId: 2019090466906397
+  aliPid: 2088531834794635
+  aliSeller: 2088531834794635
+  #开发者私钥，由开发者自己生成
+  aliAppPrivateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCCozdZYqBj+sdi1AwViKTYYE4YiLX+USmKY9dFljM3Yb0cRYbiXpRwxKvvTQpbozR9n4pFbFlmK6mZ/uRfX5kqL2pSw/IPokv4qYpguMpAPKJsyntZENCKwsMCLW//yb+msXldE/dtoMG8jGY0V2swaGExYPn5RNL1sLgluETJOIJDCdaxACIXt4D3QrRxJGqp7rQ30zU/j4ubAnlQ7elk9ovPbGgZRoAlQ944IGyCfm/QiwFPmv+y9WlsqOmCXQokgf/LWTEJ8mg9ZyZGXFpHZenHXfgRYrKBtFOvIWiWKiogRUtOKs11JM8q3x1AY/Mea/NW97+ciMWig4dkRAoLAgMBAAECggEAFxfFE/70PVg6YMT9Md1KzpkPlRStnzw3rKgDiOCJQzP62wGLW36+nMSXZCDpQNOz1rUaGzWRBBeZzogZVKawi52AHQtYQd09ssI9nOVtkzdkuvh8H31yb+UH1d20W7INN+lNe9+osG9nb+4drwj5AMCi1bi/14mMBTRtCPXu6ubZhmq3K8yFOyTOITgeqTWH/raY0IY0ziUhCAoETXPrYYHFfQ5GKsgP9fM+O78Z/B72eaU34qnOaVtPEPaep6KT+/zPwB9mzOt5DkGNQSsRT/OHH2yx37xoy5X9zA8SsPFnTETtZjEB2wCRlwgC8dsR5OjORUUnIJkI5zpF97ObQQKBgQDdBkxYmOn7iBfM9NjGR6I6BrXkQ7R3XNEIIBPugozdp0gJsIe98Nu2IXEunCyIGm61sfPOLIEuQ/9VdjQE7cSvIwCqybganA/YNToLJXqZ0FB46rIroII6MRvBedT+xv0eD5HxFAFFmPnq536hDIjMX33FSZu2/GvdCzjG0i1fqwKBgQCXT1dM8BMfYwITSyGbk4znHRlPyQHgBMaelxU/4pfq8FNsHYdGinsf+V3JMsh5+tWekpC2pGZ+slfDCRd+ui2LXWnTeNeU8+DiPaOJmajtrSNLXQ/T2y6NCtxhSHtl8R2eIx/9xLoXfmuf1gC8r6VqaLC4//WDsTDUWAXZCH8fIQKBgD0GkyfXOKuBfQjTBdNhTfJ1jd0zsG1QjEqRCM/O7fP5TxOV0TTpftB/1U9IQadmnPC/7JAdi6FpluNS2rQNrkOpB3MgdRurwVgyAg+3zm0PrlhkfMM88xf8HSzDZcLe0F5vcB0/J8a+oSpxtm3jFxZOu1wwobTZZzLF+Wwz9eE3AoGAAuzawDcH95xfZuYV8T8KA1HRsnQtYBpXiKtdEs4bp8QbqMRtYBS/Sp/0izY7H/iUdqtYtt84yAxEnBWp6Z5J0R7uM9NrP4rzdwxABCH/XRDy1Lso2iyrmrhyCENxd0gRDYSaUrqh6mBcTkvB2eP/a644dGsmYPRlAEXvXwHGC2ECgYAVNqA74xUYrRcHgDZuk+pPaVrPL7Jmu3+jJB8lSZfRd3/ntnsfpdn9vNYg2qagPH/2BcwuxUQihbRVDHCPzahQq82OJWnyyR0e+ul1OkreG4jTNF7rrhkEJJiUOTyVQmopkHvLycLYDvERbymiKbEYyPvB9fr/1WSv11CHJCotoA==
+  #支付宝公钥，由支付宝生成
+  aliAppPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwSeFtjHVEt6jbcNC8pkKTla0dEbBjaZ58H4d6lBg4YgJBii6XKL86M+R+2E2aSKG3elNe/pjrHSX4AN+kjE+/FkmstI15EOd6OPQ92x6/Ks/HaDqvU/7eCq6c00w0RPz3PC/d4BrVp+wCFY7zMTv2LCu80O0GOIgAJKdb51FU2U5vQP/8+pVxmEpxAEl6HdmTkEtxEDF8nO4bskwGKnhy+z97idcXzBySrCx5XiNCFlgptM6UatYYLogjTv4LsUW/aRhe7R/WmUbuj8+5b9pIeAlzoTxeUuk6sDNO/nRsxvS/bPzTaZlMLwGU7bc+eZqRnRu1beFjV82qr6LyNiymQIDAQAB
+  #支付宝网关（固定
+  aliRequestURL: https://openapi.alipay.com/gateway.do
+  aliLoginURI: https://openauth.alipay.com/oauth2/appToAppAuth.htm
+  aliAuthorizeURI: https://openauth.alipay.com/oauth2/publicAppAuthorize.htm
+  aliNormalNotifyUrl: http://47.112.169.89:88/ali/pay/aliAppNormalOrderCallBack
+  #aliNormalNotifyUrl: http://120.79.219.46:83/ali/pay/aliAppNormalOrderCallBack
+  #参数返回格式，只支持json
+  aliFormat : json
+  #编码集，支持GBK/UTF-8
+  aliCharset: UTF-8
+  #商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2
+  aliSignType: RSA2
+  #接口权限值，目前只支持auth_user和auth_base两个值-->>
+  #auth_base：以auth_base为scope发起的网页授权，是用来获取进入页面的用户的userId的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（通常是业务页面）。
+  #auth_user：以auth_user为scope发起的网页授权，是用来获取用户的基本信息的（比如头像、昵称等）。但这种授权需要用户手动同意，用户同意后，就可在授权后获取到该用户的基本信息。若想获取用户信息，scope的值中需要有该值存在，如scope=auth_user,auth_base
+  aliScope: auth_user
+
+#七牛云存储OSS
+qiNiuOss:
+  qiNiuAccessKey: RkU6P5xG8a3mPUA23WlYHKWgGooPCRXh730GnngB
+  qiNiuSecretKey: tTy-0fdmeDA5dYI48KxhH7QAPVJ1xhgPJNFO1Sjc
+  qiNiuBucket: ljd-app
+  qiNiuCndDomain: https://img.ljd.leyongleshi.com/
+
+#悦凡短信SMS
+yueFanSms:
+  yueFanSmsAccount: leyong
+  yueFanSmsPassWord: dc82b77e8ce4b495219118eb2ad4a39c
+  yueFanSmsType: leyong
+  yueFanSmsSign: 【爱触】
+  yueFanSmsVerifCodeTime: 15
+
+#网易云
+wangYiYunCloud:
+  appKey: 3683b8198b2cc930c76eb595803f5f1b
+  appSecret: a00caa02121c
+
+#激光推送配置参数信息
+jPush:
+  appKey: fa3e910098872cb14bde09b6
+  appSecret: 083fb0809acd7ef1a00f504f
+
+#日志配置信息
+logback:
+  logDir: log/dev
+
+logging:
+  level:
+    com.aichu.app.api: debug
+    com.aichu.service.api.impl: debug
+    com.aichu.manager: debug
+    com.aichu.dao.autogeneration.mapper: debug
+    com.aichu.dao.workstation.mapper: debug

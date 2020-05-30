@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcAdminModuleJurDaoMapper">
+  <resultMap id="BaseResultMap" type="com.aichu.dao.workstation.object.AcAdminModuleJurDao">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="module_id" jdbcType="INTEGER" property="moduleId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="perms_code" jdbcType="VARCHAR" property="permsCode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+    <!--通过菜单角色权限表ID查询 详情-->
+      <select id="getAdminModuleJurToMouduleJurId" resultType="com.aichu.dao.workstation.object.AcAdminModuleJurDao" parameterType="java.lang.Integer">
+            select  wamj.id id,
+                    wamj.module_id moduleId,
+                    wamj.url url,
+                    wamj.role_code roleCode,
+                    wamj.description description
+                from ac_admin_module_jur wamj
+            where wamj.id = #{mouduleJurId} and wamj.is_delete = 0
+      </select>
+
+    <!--查询所有的角色权限菜单权限-->
+    <select id="getAllAdminModuleJur" resultType="com.aichu.dao.workstation.object.AcAdminModuleJurDao" >
+            select  wamj.id id,
+                    wamj.module_id moduleId,
+                    wamj.url url,
+                    wamj.role_code roleCode,
+                    wamj.description description
+                from ac_admin_module_jur wamj
+            where wamj.is_delete = 0
+      </select>
+
+    <!--修改权限关联表，增加角色权限-->
+    <update id="updateModuleJurAddRoleCode">
+        update ac_admin_module_jur wamj
+          set wamj.role_code = concat(wamj.role_code,',',#{roleCode})
+        where wamj.id = #{moduleJurId} and wamj.is_delete = 0
+    </update>
+
+    <!--获取权限关联表权限代码-->
+    <select id="getModuleJurPermsCodeToId" resultType="java.lang.String">
+        select wamj.perms_code AS permsCode
+          from ac_admin_module_jur wamj
+        where wamj.is_delete = 0 and wamj.id = #{moduleJurId}
+    </select>
+
+    <!--取消角色的权限-->
+    <update id="updateModuleJurPermsCodeToRoleCode">
+        update ac_admin_module_jur wamj
+          set wamj.role_code = REPLACE(wamj.role_code,#{roleCode},''),
+              wamj.role_code = REPLACE(wamj.role_code,',,',',')
+        where locate(#{roleCode},wamj.role_code)
+    </update>
+
+    <!--通过moduleJurId取消角色的权限-->
+    <update id="updatePermsCodeToRoleCodeAndMJurId">
+        update ac_admin_module_jur wamj
+          set wamj.role_code = REPLACE(wamj.role_code,#{roleCode},''),
+              wamj.role_code = REPLACE(wamj.role_code,',,',',')
+        where locate(#{roleCode},wamj.role_code) and wamj.id = #{moduleJurId}
+    </update>
+
+    <!--通过角色Code获取所有的角色菜单权限Id-->
+    <select id="getAllModuleJurIdToRoleCode" resultType="java.lang.Integer">
+        select wamj.id from ac_admin_module_jur wamj where locate(#{roleCode},wamj.role_code)
+    </select>
+
+</mapper>

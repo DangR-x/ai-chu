@@ -1,0 +1,33 @@
+# Server配置信息
+server:
+  #port: 83
+  port: 85
+#  servlet:
+#    context-path: /api/v1
+
+# Spring环境配置信息
+spring:
+  profiles:
+    active: dev
+
+## mybatis环境配置信息
+mybatis:
+  mapper-locations: classpath*:**/sqlmap/**/*.xml
+  typeAliasesPackage: com.aichu.dao.*.object
+
+# JWT参数信息配置
+jwt:
+  header: Authorization
+  base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=    # your-base-64-secret
+  refreshBase64Secret: MHNkamZsYWpkZmppMjM0MDk4amtkc2E4dTIwMzg0bGFmYXNkZjQ1NndlcnUwOTIzdWxh
+  #issuer: your-app-server
+  expiresSecond: 86400000
+  refreshExpiresSecond: 86400000
+  flushExpireAfterOperation: true
+  tokenExpireSeconds: 604800000
+  singleTokenWithUser: true
+
+# 日志信息处理
+logback:
+  appName: aichu_v1.0.0
+  fileType: log

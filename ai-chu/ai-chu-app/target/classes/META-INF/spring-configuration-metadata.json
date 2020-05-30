@@ -1,0 +1,54 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.aichu.app.config.redis.TokenConfig",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.base64-secret",
+      "type": "java.lang.String",
+      "description": "base64加密字符串",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    },
+    {
+      "name": "jwt.expires-second",
+      "type": "java.lang.Integer",
+      "description": "jwt token过期时间，毫秒",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    },
+    {
+      "name": "jwt.flush-expire-after-operation",
+      "type": "java.lang.Boolean",
+      "description": "是否在每次有效操作后刷新token在redis中的过期时间，是=true，否=false",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    },
+    {
+      "name": "jwt.refresh-base64-secret",
+      "type": "java.lang.String",
+      "description": "base64加密字符串 刷新使用",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    },
+    {
+      "name": "jwt.refresh-expires-second",
+      "type": "java.lang.Integer",
+      "description": "refresh token过期时间",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    },
+    {
+      "name": "jwt.single-token-with-user",
+      "type": "java.lang.Boolean",
+      "description": "是否一个用户单对应唯一一个Token，是=true，否=false",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    },
+    {
+      "name": "jwt.token-expire-seconds",
+      "type": "java.lang.Integer",
+      "description": "redis token过期时间，秒",
+      "sourceType": "com.aichu.app.config.redis.TokenConfig"
+    }
+  ],
+  "hints": []
+}

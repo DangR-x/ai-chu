@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcAdminUserDaoMapper">
+  <resultMap id="BaseResultMap" type="com.aichu.dao.workstation.object.AcAdminUserDao">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="alias_name" jdbcType="VARCHAR" property="aliasName" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+    <!-- 根据管理员名称查询管理员信息 -->
+    <select id="getAdminUserToUserName" resultType="com.aichu.dao.workstation.object.AcAdminUserDao">
+        select nau.id,
+               nau.user_name AS userName,
+               nau.password,
+               nau.alias_name AS aliasName,
+               nau.type,
+               nau.head_img AS headImg,
+               nau.is_delete AS isDelete,
+               DATE_FORMAT(nau.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_admin_user nau
+        where nau.user_name = #{userName}
+          and nau.is_delete = 0
+    </select>
+
+    <!--管理员列表查询-->
+    <select id="getAdminUserList" resultType="com.aichu.dao.workstation.object.AcAdminUserDao">
+         select nau.id,
+                nau.user_name AS userName,
+                nau.password,
+                nau.alias_name AS aliasName,
+                nau.type,
+                nau.head_img AS headImg,
+                nau.is_delete AS isDelete,
+                DATE_FORMAT(nau.create_time,'%Y-%m-%d %H:%i:%s') AS createTime,
+                (
+                select group_concat(war.role_name)
+                  from ac_admin_user_role waur inner join ac_admin_role war on (waur.role_id = war.id)
+                where waur.user_id = nau.id
+                    and war.is_delete = 0
+                    and waur.is_delete = 0
+                    ) AS roleNameList
+        from ac_admin_user nau
+        where nau.is_delete = 0
+        <if test="name != null and name != ''">
+            and nau.user_name like concat('%',#{name},'%')
+        </if>
+        <!--<if test="type != null">-->
+            <!--and nau.type = #{type}-->
+        <!--</if>-->
+        order by nau.create_time desc
+    </select>
+
+    <!-- 后台管理员角色Name数据 -->
+    <resultMap id="userRoleNameList" type="com.aichu.dao.workstation.object.AdminUserBackDetailDao">
+        <collection property="roleNameList" select="com.aichu.dao.workstation.mapper.AcAdminRoleDaoMapper.getRoleNameListToUserId" column="userId"/>
+    </resultMap>
+    <!-- 后台管理员用户信息详情-->
+    <select id="getAdminUserBackDetail" resultMap="userRoleNameList">
+        select  wau.id,
+                wau.user_name AS userName,
+                wau.alias_name AS aliasName,
+                wau.is_delete AS status,
+                wau.type,
+                wau.head_img AS headImg,
+                DATE_FORMAT(wau.create_time,'%Y-%m-%d %H:%i:%s') AS createTime,
+                wau.id AS userId
+          from ac_admin_user wau
+        where  wau.id = #{userId}
+    </select>
+
+    <!-- 后台管理员角色ID数据 -->
+    <resultMap id="userRoleIdList" type="com.aichu.dao.workstation.object.EditorAdminUserBackDao">
+        <collection property="roleIdList" select="com.aichu.dao.workstation.mapper.AcAdminRoleDaoMapper.getRoleIdListToUserId" column="userId"/>
+    </resultMap>
+    <!--后台查询管理员编辑用户信息-->
+    <select id="getEditorAdminUserBackDetail" resultMap="userRoleIdList">
+        select wau.id,
+               wau.user_name AS userName,
+               wau.alias_name AS aliasName,
+               wau.password AS passWord,
+               wau.is_delete AS status,
+               wau.type,
+               wau.head_img AS headImg,
+               DATE_FORMAT(wau.create_time,'%Y-%m-%d %H:%i:%s') AS createTime,
+               wau.id AS userId
+          from ac_admin_user wau
+        where  wau.id = #{userId}
+    </select>
+
+</mapper>

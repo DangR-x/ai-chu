@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.autogeneration.mapper.AcAdminActionLogMapper">
+  <resultMap id="BaseResultMap" type="com.aichu.dao.autogeneration.object.AcAdminActionLogDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="admin_user_id" jdbcType="INTEGER" property="adminUserId" />
+    <result column="action_ip" jdbcType="VARCHAR" property="actionIp" />
+    <result column="action_model" jdbcType="VARCHAR" property="actionModel" />
+    <result column="action_log" jdbcType="VARCHAR" property="actionLog" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, admin_user_id, action_ip, action_model, action_log, is_delete, create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ac_admin_action_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ac_admin_action_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ac_admin_action_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogExample">
+    delete from ac_admin_action_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ac_admin_action_log (admin_user_id, action_ip, action_model, 
+      action_log, is_delete, create_time
+      )
+    values (#{adminUserId,jdbcType=INTEGER}, #{actionIp,jdbcType=VARCHAR}, #{actionModel,jdbcType=VARCHAR}, 
+      #{actionLog,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogDO">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ac_admin_action_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminUserId != null">
+        admin_user_id,
+      </if>
+      <if test="actionIp != null">
+        action_ip,
+      </if>
+      <if test="actionModel != null">
+        action_model,
+      </if>
+      <if test="actionLog != null">
+        action_log,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminUserId != null">
+        #{adminUserId,jdbcType=INTEGER},
+      </if>
+      <if test="actionIp != null">
+        #{actionIp,jdbcType=VARCHAR},
+      </if>
+      <if test="actionModel != null">
+        #{actionModel,jdbcType=VARCHAR},
+      </if>
+      <if test="actionLog != null">
+        #{actionLog,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogExample" resultType="java.lang.Long">
+    select count(*) from ac_admin_action_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ac_admin_action_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.adminUserId != null">
+        admin_user_id = #{record.adminUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.actionIp != null">
+        action_ip = #{record.actionIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionModel != null">
+        action_model = #{record.actionModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionLog != null">
+        action_log = #{record.actionLog,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null">
+        is_delete = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ac_admin_action_log
+    set id = #{record.id,jdbcType=INTEGER},
+      admin_user_id = #{record.adminUserId,jdbcType=INTEGER},
+      action_ip = #{record.actionIp,jdbcType=VARCHAR},
+      action_model = #{record.actionModel,jdbcType=VARCHAR},
+      action_log = #{record.actionLog,jdbcType=VARCHAR},
+      is_delete = #{record.isDelete,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogDO">
+    update ac_admin_action_log
+    <set>
+      <if test="adminUserId != null">
+        admin_user_id = #{adminUserId,jdbcType=INTEGER},
+      </if>
+      <if test="actionIp != null">
+        action_ip = #{actionIp,jdbcType=VARCHAR},
+      </if>
+      <if test="actionModel != null">
+        action_model = #{actionModel,jdbcType=VARCHAR},
+      </if>
+      <if test="actionLog != null">
+        action_log = #{actionLog,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogDO">
+    update ac_admin_action_log
+    set admin_user_id = #{adminUserId,jdbcType=INTEGER},
+      action_ip = #{actionIp,jdbcType=VARCHAR},
+      action_model = #{actionModel,jdbcType=VARCHAR},
+      action_log = #{actionLog,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.aichu.dao.autogeneration.object.AcAdminActionLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ac_admin_action_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

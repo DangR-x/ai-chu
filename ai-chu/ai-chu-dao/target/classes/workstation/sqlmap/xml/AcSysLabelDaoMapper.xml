@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcSysLabelDaoMapper">
+
+    <!-- 获取用户印象标签信息 -->
+    <select id="userImpressionLabel" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            asl.`name`
+        FROM
+            `ac_sys_label` asl
+        WHERE
+            asl.is_delete = 0
+            <if test="_parameter != null and _parameter != ''">
+                AND asl.id IN
+                <foreach item="item" index="index" collection="_parameter.split(',')"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+    </select>
+
+    <!-- 获取用户印象标签信息 -->
+    <select id="userImpressionLabelLimitOne" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            asl.`name`
+        FROM
+            `ac_sys_label` asl
+        WHERE
+            asl.is_delete = 0
+            <if test="_parameter != null and _parameter != ''">
+                AND asl.id IN
+                <foreach item="item" index="index" collection="_parameter.split(',')"  open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            LIMIT 1
+    </select>
+
+    <!--后台系统标签库查询-->
+    <select id="getLabelBackList" resultType="com.aichu.dao.workstation.object.AcSysLabelDao" parameterType="com.aichu.dao.workstation.object.AcLabelQueryDao">
+        select wsl.id,
+            wsl.name,
+            wsl.action_desc AS actionDesc,
+            wsl.action_detail_desc AS actionDetailDesc,
+            wsl.code,
+            wsl.type,
+            DATE_FORMAT(wsl.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        from ac_sys_label wsl
+        where wsl.is_delete = 0
+        <if test="name != null and name != ''">
+            and (
+               wsl.name like CONCAT('%',#{name,jdbcType=VARCHAR},'%')
+            or wsl.code like CONCAT('%',#{name,jdbcType=VARCHAR},'%')
+            )
+        </if>
+        <if test="typeId != null ">
+            and wsl.type = #{typeId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <!-- 标签库查询（下拉框）-->
+    <select id="getLabelSelectList" resultType="com.aichu.dao.workstation.object.AcSysLabelSelectDao">
+        select wsl.id,
+               wsl.name AS labelName
+        from ac_sys_label wsl where wsl.is_delete = 0
+      </select>
+
+</mapper>

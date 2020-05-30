@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.6.RELEASE</version>
+    </parent>
+    <groupId>com.aichu</groupId>
+    <artifactId>ai-chu</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>ai-chu</name>
+    <description>爱触项目父Pom管理项目</description>
+
+    <modules>
+        <module>ai-chu-admin</module>
+        <module>ai-chu-app</module>
+        <module>ai-chu-dao</module>
+        <module>ai-chu-common-util</module>
+        <module>ai-chu-service</module>
+        <module>ai-chu-manager-service</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <aichu.version>1.0.0</aichu.version>
+        <swagger2.version>2.9.2</swagger2.version>
+        <JavaLib.version>1.0.4.RELEASE</JavaLib.version>
+        <mp.version>3.0.1</mp.version>
+        <jjwt.version>0.7.0</jjwt.version>
+        <jxl.core>2.6.12</jxl.core>
+        <javax.bind.version>2.2.12</javax.bind.version>
+        <mybatis.generator.core>1.3.6</mybatis.generator.core>
+        <mysql.version>5.1.37</mysql.version>
+        <hikari.version>2.5.1</hikari.version>
+        <org.apache.commons.version>3.9</org.apache.commons.version>
+        <egzosn.version>2.12.8</egzosn.version>
+        <binarywang.wechat.version>3.1.0</binarywang.wechat.version>
+        <org.reflections.util.version>0.9.11</org.reflections.util.version>
+        <qcloudsms.version>1.0.2</qcloudsms.version>
+        <org.springframework.boot.redis>2.1.6.RELEASE</org.springframework.boot.redis>
+        <alipay-sdk.version>3.7.110.ALL</alipay-sdk.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <shiro.version>1.4.0</shiro.version>
+        <shiro.redis.version>3.2.3</shiro.redis.version>
+        <shiro.ehcache>1.4.1</shiro.ehcache>
+        <pagehelper.version>1.2.12</pagehelper.version>
+        <rongcloud.version>3.0.5</rongcloud.version>
+        <aliyun.oss.version>3.5.0</aliyun.oss.version>
+        <zxing.version>3.3.0</zxing.version>
+        <io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <net.sf.json.lib.version>2.4</net.sf.json.lib.version>
+        <commons-fileupload.version>1.4</commons-fileupload.version>
+        <com.aliyun.sms.version>4.0.3</com.aliyun.sms.version>
+        <aliyun.java.sdk.core.version>4.4.4</aliyun.java.sdk.core.version>
+        <aliyun.java.sdk.dypnsapi.version>1.0.4</aliyun.java.sdk.dypnsapi.version>
+        <qiniu-java-sdk.version>[7.2.0, 7.2.99]</qiniu-java-sdk.version>
+        <com.alipay.sdk.version>4.9.13.ALL</com.alipay.sdk.version>
+        <cn.jpush.api.version>3.3.10</cn.jpush.api.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- alibaba fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- javax.xml.bind -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${javax.bind.version}</version>
+        </dependency>
+
+        <!-- 热部署-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- swagger2 依赖  -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+
+        <!--解决进入swagger页面报类型转换错误，排除2.9.2中的引用，手动增加1.5.21版本-->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>1.5.21</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/org.springframework.jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.1.8.RELEASE</version>
+        </dependency>
+
+        <!-- Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${org.springframework.boot.redis}</version>
+        </dependency>
+
+        <!--添加 Shiro支持-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+        <!-- shiro-ehcache -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro.ehcache}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>${shiro.redis.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.rongcloud.im</groupId>
+            <artifactId>server-sdk-java</artifactId>
+            <version>${rongcloud.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

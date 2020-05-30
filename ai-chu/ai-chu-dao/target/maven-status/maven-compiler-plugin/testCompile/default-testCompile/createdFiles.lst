@@ -1,0 +1,6 @@
+generator\MybatisGenerator.class
+plugin\TableIgnoreFiledPlugin.class
+plugin\SqlMapMergeablePlugin.class
+plugin\ModelCommentPlugin.class
+plugin\ModelRenamePlugin.class
+plugin\PaginationPlugin.class

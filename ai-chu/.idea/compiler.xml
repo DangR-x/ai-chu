@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ai-chu-admin" />
+        <module name="ai-chu-app" />
+        <module name="ai-chu-common-util" />
+        <module name="ai-chu-dao" />
+        <module name="ai-chu-manager-service" />
+        <module name="ai-chu-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ai-chu" target="1.8" />
+      <module name="ai-chu-admin" target="1.8" />
+      <module name="ai-chu-app" target="1.8" />
+      <module name="ai-chu-common-util" target="1.8" />
+      <module name="ai-chu-dao" target="1.8" />
+      <module name="ai-chu-manager-service" target="1.8" />
+      <module name="ai-chu-service" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ai-chu-admin" options="-parameters" />
+      <module name="ai-chu-app" options="-parameters" />
+      <module name="ai-chu-common-util" options="-parameters" />
+      <module name="ai-chu-dao" options="-parameters" />
+      <module name="ai-chu-manager-service" options="-parameters" />
+      <module name="ai-chu-service" options="-parameters" />
+    </option>
+  </component>
+</project>

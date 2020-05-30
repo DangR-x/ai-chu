@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcAdminModuleDaoMapper">
+
+    <!--获取一级菜单-->
+  <select id="getMenuCascadeList" resultMap="getTwoMenuCascade">
+    select wam.id,
+           wam.module_name AS moduleName,
+           wam.id AS parentId
+      from ac_admin_module wam where wam.parent_id = 0 and wam.is_delete = 0
+  </select>
+
+    <!--获取二级菜单视图-->
+  <resultMap id="getTwoMenuCascade" type="com.aichu.dao.workstation.object.MenuCascadeListDao">
+    <collection property="menuCascadeList" select="com.aichu.dao.workstation.mapper.AcAdminModuleDaoMapper.getTwoMenuCascadeList" column="parentId"/>
+  </resultMap>
+    <!--获取二级菜单-->
+  <select id="getTwoMenuCascadeList" resultMap="getPemissionMenuCascade">
+    select wam.id,
+           wam.module_name AS moduleName,
+           wam.id AS parentId
+      from ac_admin_module wam where wam.parent_id = #{parentId} and wam.is_delete = 0
+  </select>
+
+    <!--获取二级菜单权限视图-->
+  <resultMap id="getPemissionMenuCascade" type="com.aichu.dao.workstation.object.MenuCascadeListDao">
+    <collection property="menuCascadeList" select="com.aichu.dao.workstation.mapper.AcAdminModuleDaoMapper.getPemissionMenuCascadeList" column="parentId"/>
+  </resultMap>
+    <!--获取二级菜单权限-->
+  <select id="getPemissionMenuCascadeList" resultType="com.aichu.dao.workstation.object.MenuCascadeListDao">
+      select wamj.id,
+             wamj.name AS moduleName
+        from ac_admin_module_jur wamj
+      where wamj.module_id = #{parentId} and wamj.is_delete = 0
+  </select>
+
+    <!--获取角色权限ID-->
+    <select id="getRolePermissionIdList" resultType="java.lang.Integer">
+        select wamj.id from ac_admin_module_jur wamj inner join (select
+              -(-(wrd.perms_code)) AS permsId
+          FROM ac_admin_role_description wrd
+        where wrd.role_id = #{roleId} and wrd.is_delete = 0) perms on wamj.id = perms.permsId and wamj.is_delete = 0
+    </select>
+</mapper>

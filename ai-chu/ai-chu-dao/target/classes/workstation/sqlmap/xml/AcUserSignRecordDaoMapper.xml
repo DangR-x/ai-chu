@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcUserSignRecordDaoMapper">
+
+    <!--查询用户优惠卡签到信息-->
+    <select id="signRecordByPreferentialCard" resultType="com.aichu.dao.autogeneration.object.AcUserSignRecordDO">
+        SELECT
+            ausr.`id` AS id,
+            ausr.user_id AS userId,
+            ausr.coin AS coin,
+            ausr.week_coin AS weekCoin,
+            ausr.mouth_coin AS mouthCoin,
+            ausr.is_delete AS isDelete,
+            ausr.create_time AS createTime
+        FROM
+            `ac_user_sign_record` ausr
+        WHERE
+                ausr.user_id = #{userId}
+           AND DATE_FORMAT(ausr.create_time,'%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(#{create_time},'%Y-%m-%d  %H:%i:%s')
+           AND ausr.is_delete = 0
+    </select>
+
+    <!--查询用户今日是否签到-->
+    <select id="userIsSignToDay" resultType="com.aichu.dao.autogeneration.object.AcUserSignRecordDO">
+        SELECT
+            ausr.*
+        FROM
+            `ac_user_sign_record` ausr
+        WHERE
+                ausr.user_id = #{userId}
+           AND DATE_FORMAT(ausr.create_time, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+           AND ausr.is_delete = 0
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcUserPhotoAlbumDaoMapper">
+
+    <!-- 根据用户相册信息 -->
+    <select id="userPhotoAlbumList" resultType="java.lang.String">
+        SELECT
+            aupa.file_url
+        FROM
+            `ac_user_photo_album` aupa
+        WHERE
+                aupa.user_id = #{aimUserId}
+            AND aupa.is_delete = 0
+    </select>
+
+</mapper>

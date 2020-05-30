@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aichu.dao.workstation.mapper.AcUserAnchorDaoMapper">
+
+    <!--代理用户代理中心信息-->
+    <resultMap id="agencyAnchorCenterMap" type="com.aichu.dao.workstation.object.AgencyAnchorCenterDao">
+        <collection property="userAnchorDaoList" select="com.aichu.dao.workstation.mapper.AcUserAnchorDaoMapper.userAnchorDaoListInfo"
+                    column="userId"/>
+    </resultMap>
+    <select id="agencyAnchorCenter" parameterType="java.lang.Integer" resultMap="agencyAnchorCenterMap">
+        SELECT
+            #{userId} AS userId,
+            au.coin AS earnTotalCoin,
+            case au.is_agency
+                when 0 then 0
+                when 1 then (
+                            SELECT
+                                COUNT(aua.`id`)
+                            FROM
+                                `ac_user_anchor` aua
+                            WHERE
+                                    aua.user_id = #{userId}
+                                AND aua.is_delete = 0
+            ) else 0 end AS totalInviteNum,
+            case au.is_agency
+                when 0 then 0
+                when 1 then (
+                            SELECT
+                                COUNT(aua.`id`)
+                            FROM
+                                `ac_user_anchor` aua
+                            WHERE
+                                    aua.user_id = #{userId}
+                                AND aua.is_delete = 0
+                                AND DATE_FORMAT(aua.create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+            ) else 0 end AS todayInviteNum,
+            (
+                SELECT
+                    SUM(aob.order_amount)
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        aob.user_id IN (
+                            SELECT
+                                aua.anchor_user_id
+                            FROM
+                                `ac_user_anchor` aua
+                            WHERE
+                                    aua.user_id = #{userId}
+                                AND aua.is_delete = 0
+                        )
+                    AND aob.pay_status = 1
+                    AND aob.is_delete = 0
+                    AND DATE_FORMAT(aob.create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+            ) AS todayEarnCoin,
+            case au.is_agency
+                when 0 then 0
+                when 1 then
+                (
+                    SELECT
+                        COUNT(aua.`id`)
+                    FROM
+                        `ac_user_anchor` aua
+                        inner join ac_user au2 on aua.anchor_user_id = au2.id
+                    WHERE
+                            aua.user_id = #{userId}
+                        AND aua.is_delete = 0
+                        AND au2.is_anchor = 1
+                )
+               else 0 end AS userAnchorNum,
+            (
+                SELECT
+                    SUM(aob.order_amount)
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        aob.user_id = #{userId}
+                    AND aob.consume_type = 5
+                    AND aob.pay_status = 1
+                    AND aob.is_delete = 0
+                    AND DATE_FORMAT(aob.create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+            ) AS todayDeductCoin,
+            (
+                SELECT
+                    SUM(aob.order_amount)
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        aob.user_id = #{userId}
+                    AND aob.consume_type = 5
+                    AND aob.pay_status = 1
+                    AND aob.is_delete = 0
+            ) AS totalDeductCoin
+        FROM
+            `ac_user` au
+        WHERE
+                au.`id` = #{userId}
+           AND au.is_freeze = 0
+           AND au.is_delete = 0
+    </select>
+
+    <!-- 代理主播信息 -->
+    <select id="userAnchorDaoListInfo" parameterType="java.lang.Integer" resultType="com.aichu.dao.workstation.object.UserAnchorDao">
+        SELECT
+            au.`id` AS userId,
+            au.ac_uid AS userAcId,
+            au.nick_name AS userName,
+            (
+                SELECT
+                    SUM(aob.order_amount)
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        aob.user_id = au.`id`
+                    AND aob.consume_type = 5
+                    AND aob.pay_status = 1
+                    AND aob.is_delete = 0
+                    AND DATE_FORMAT(aob.create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+            ) AS todayDeductCoin,
+            (
+                SELECT
+                    SUM(aob.order_amount)
+                FROM
+                    `ac_order_base` aob
+                WHERE
+                        aob.user_id = #{userId}
+                    AND aob.consume_type = 5
+                    AND aob.pay_status = 1
+                    AND aob.is_delete = 0
+            ) AS totalDeductCoin
+        FROM
+            `ac_user_anchor` aua
+        LEFT JOIN  `ac_user` au ON aua.anchor_user_id = au.`id`
+        WHERE
+                aua.user_id = #{userId}
+            AND aua.is_delete = 0
+            AND au.is_freeze = 0
+            AND AU.is_anchor = 1
+            AND au.is_delete = 0
+    </select>
+
+    <!-- 用户代理下级用戶列表信息 -->
+    <select id="userAgencyNextUserList" parameterType="java.lang.Integer" resultType="com.aichu.dao.workstation.object.UserAgencyNextUserDao">
+        SELECT
+            au.`id` AS userId,
+            au.ac_uid AS userAcUid,
+            au.nick_name AS userName,
+            au.head_img AS userHead,
+            au.sex AS userSex,
+            DATE_FORMAT(au.create_time,'%Y-%m-%d %H:%i:%s') AS createTime
+        FROM
+            `ac_user_anchor` aua
+        LEFT JOIN  `ac_user` au ON aua.anchor_user_id = au.`id`
+        WHERE
+                aua.user_id = #{userId}
+            AND aua.is_delete = 0
+            AND au.is_freeze = 0
+            AND au.is_delete = 0
+    </select>
+
+</mapper>
