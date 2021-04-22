@@ -43,7 +43,7 @@
         <org.springframework.boot.redis>2.1.6.RELEASE</org.springframework.boot.redis>
         <alipay-sdk.version>3.7.110.ALL</alipay-sdk.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.7.0</shiro.version>
         <shiro.redis.version>3.2.3</shiro.redis.version>
         <shiro.ehcache>1.4.1</shiro.ehcache>
         <pagehelper.version>1.2.12</pagehelper.version>
